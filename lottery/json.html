@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="js/jquery-2.1.0.js"></script>
+</head>
+<body>
+	<div id="dataSpace"></div>
+	<script>
+	$(function(){
+		$.ajax({
+			type:"GET",
+			url:'data/data.json',
+			dataType:'json',
+			success:function(data){
+				// var data = eval(data);
+					console.log(data);
+					console.log(data.personData[0].pic)
+			}
+		});
+	});
+		
+	</script>
+</body>
+</html>
