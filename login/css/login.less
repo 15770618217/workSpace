@@ -1,0 +1,151 @@
+/* ========================================
+placeholder样式
+===========================================*/
+input:-moz-placeholder,.login-input {
+  /* Mozilla Firefox 4 to 18 */
+  color:#ccc;
+}
+input::-webkit-input-placeholder,.login-input{
+  /* Mozilla Firefox 4 to 18 */
+  color:#ccc;
+}
+input:-ms-input-placeholder,.login-input {
+  /* Mozilla Firefox 4 to 18 */
+  color:#ccc;
+}
+// 去掉IE input X 和 眼睛图标
+input::-ms-clear,::-ms-reveal{
+	display: none;
+}
+/* ==========================================
+ 登录表最外层框
+ ===========================================*/
+.login-wrap{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	min-width: 1150px;
+	background: url(../imgs/登录界面2-拷贝.gif) center no-repeat;
+	overflow: hidden;
+}
+/* ========================================= 
+登录框内容 
+ ===========================================*/
+.login-content{
+	position: absolute;
+	top: 50%;
+	margin-top: -290px;
+	width: 100%;
+	height: 580px;
+}
+/* 图片区 
+============================================*/
+.insertPic{
+	float: left;
+	width: 50%;
+	height: 580px;
+	line-height: 580px;
+	text-align: right;
+}
+.insertPic>img{
+	vertical-align: middle;
+}
+/* 登录框区 
+============================================*/
+.login-box{
+	float: left;
+	margin-top: 80px;
+	margin-left: 200px;
+	padding: 0 35px;
+	width: 371px;
+	height: 420px;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+/* 登录框标题 
+ ==========================================*/
+.login-box>h1{
+	color: #024c7c;
+	margin: 50px 0 58px 0;
+	text-align: center;
+}
+.login-box>form>ul>li{
+	position: relative;
+	width: 300px;
+	height: 40px;
+	margin-bottom: 37px;
+}
+/* 表单中input样式
+==========================================*/
+.login-box>form>ul>li>input{
+	width: 300px;
+	height: 40px;
+	padding-left: 50px; 
+	border: 1px solid #e6e6e6;
+	border-radius: 8px;
+	box-sizing: border-box;
+	outline: none;
+}
+.login-box>form>ul>li>input:focus{
+	border-color: #99dbfe;
+}
+.login-box>form img{
+	position: absolute;
+	top: 50%;
+	left: 0;
+	margin-top: -10px;
+	margin-left: 10px;
+}
+/* cleanBtn */
+.login-box>form i{
+	display: none;
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	margin-top: -15px; 
+	width: 20px;
+	height: 31px;
+	font-size: 26px;
+	cursor: pointer;
+}
+/*竖杠*/
+.login-box>form b{
+	position: absolute;
+	top: 50%;
+	left: 40px;
+	margin-top: -15px;
+	width: 0;
+	height: 30px;
+	border-left: 1px solid #ccc;
+}
+.login-box>form span{
+	display: none;
+	color: #ef6361;
+}
+/* 表单按钮区 
+=========================================*/
+.login-box .btn{
+	width: 77px;
+	height: 34px;
+	margin-right: 38px;
+	font-size: 15px;
+	border: 0;
+	border-radius: 8px;
+	outline: none;
+}
+.login-box .loginBtn{
+	background-color: #00abda;
+	color: #fff;
+}
+.login-box .loginBtn:hover{
+	background-color: #00abda;
+}
+.login-box .PKIBtn{
+	background-color: #e6e6e6;
+	color: #000;
+}
+.login-box .WJMM{
+	font-size: 14px;
+	color: #6dbae9;
+	cursor: pointer;
+}
