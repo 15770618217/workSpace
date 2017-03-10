@@ -1,0 +1,234 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-size: 16px;
+    background: #fff;
+    position:relative;
+}
+.hui{
+    width: 100%;
+    background: rgba(0,0,0,.5);
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+.content{
+	padding:10px 10px 0;
+	min-width:911px;
+}
+.content>span{
+    display: inline-block;
+    margin-left: 15px;
+    padding: 3px 0px 5px;
+    font-size: 20px;
+    border-bottom: 2px solid rgb(63,185,191);
+}
+#searchForm{
+    height: 160px;
+    border: 1px solid #DEDEDF;
+    margin-bottom:8px;
+    background: #fff;
+}
+#searchForm .layui-form-label{
+    padding: 9px 1%;
+}
+.searchFormTop,.searchFormMiddle{
+    width: 100%;
+    height: 48px;
+    padding-top: 10px;
+}
+.searchFormTop .layui-input-inline,.searchFormMiddle .layui-input-inline{
+    width: 20%;
+}
+/* .searchFormMiddle .startTimeBox{
+    float: left;
+    width: 20%;
+    margin-right: 10px;
+} */
+/* .searchFormMiddle .startTimeBox>.layui-input-inline{
+    width: 47%;
+    margin: 0;
+} */
+/* .searchFormMiddle .startTimeBox>.layui-form-mid{
+    width: 2%;
+    margin: 0;
+    padding: 8px 2%;
+} */
+/* .searchFormTop>.layui-form-label,.searchFormMiddle>.layui-form-label{
+    width: 10%;
+} */
+#search{
+    height: 35px;
+    line-height: 35px;
+    float: right;
+    margin-right: 45px;
+    width: 80px;
+    background: rgb(63,185,191);
+}
+#xsdfx{
+    height: 35px;
+    line-height: 35px;
+    width: 110px;
+    float: right;
+    background: rgb(226,165,120);
+    margin: -5px 10px 0;
+}
+.layui-table thead tr th,
+.layui-table tbody tr td{
+	word-break:break-all;
+    text-align: center;
+    padding:10px 5px;
+}
+.layui-table tbody tr td{
+    font-size: 16px;
+    color: rgb(102,101,101);
+    font-weight: 500;
+}
+.layui-table thead tr th{
+    padding:0;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 40px;
+}
+.stopPay{
+	color:rgb(237,155,107);
+}
+.Cyan4{
+	color:rgb(63,185,191);
+}
+#table{
+    margin: 8px 0 0 ;
+    height: auto;
+    overflow: hidden;
+    border: 2px solid #DEDEDF;
+    border-bottom-width: 1px;
+}
+#table thead tr{
+    background: none;
+    border-bottom: 2px solid rgb(63,185,191);
+}
+#table thead tr th:first-child{
+	padding:0 10px;
+	min-width: 32px;
+}
+#table tbody tr td{
+	font-size:14px;
+}
+.option span:hover{
+	cursor:pointer;
+	opacity:.5;
+}
+#zhiFuList>span{
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 20px;
+}
+#pageParent{
+	position:relative;
+	margin-top:15px;
+}
+#pageParent .laypageskin_molv input{
+	height:26px;
+	line-height:26px;
+}
+#sort{
+	position:absolute;
+	left:0;
+	top:0;
+	color:cadetblue;
+}
+#pageParent .laypageskin_molv a,#pageParent .laypageskin_molv span{
+	padding:0 20px;
+}
+.box{
+    position: absolute;
+    left:27%;
+    top:10%;
+    width: 46%;
+    height:530px;
+    margin: 0 auto;
+    background:#FFF;
+    border:1px solid #ccc;
+    z-index: 3;
+}
+#stopPayIframe{
+    width:100%;
+    height: 475px;
+}
+.boxTop{
+    width: 100%;
+    height: 35px;
+    background: rgb(91,192,222);
+    color: #fff;
+}
+.cancel{
+    float: right;
+    margin: 8px 20px 0 0;
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+.cancel:hover{
+    cursor: pointer;
+    background: cadetblue;
+}
+.boxTop>span{
+    line-height: 35px;
+    padding-left: 20px;
+}
+.prinFooter{
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: 0;
+    background: #fff;
+}
+#changeForm{
+	margin:20px;
+}
+#changeForm>div{
+	float:left;
+	width:50%;
+	height:38px;
+	padding:10px 0;
+}
+#changeForm>div .layui-input{
+	font-size:14px;
+}
+#zdybt{
+	margin-right:20px;
+}
+.boxContent{
+	padding:10px 20px;
+}
+.SAZH:hover{
+	background:#ccc;
+	color:#FFF;
+	cursor:pointer;
+}
+.addListHeader li{
+    float: left;
+    width: 128px;
+    height: 30px;
+    margin: 15px 18px;
+    border: 1px dashed #ccc;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.addListHeader li .layui-icon{
+    margin-left: 10px;
+    opacity: .6;
+}
