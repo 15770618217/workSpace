@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>处理页面</title>
+</head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
+<style>
+	.dealPage{
+		width: 100%;
+		height: 100%;
+		padding: 20px 35px 20px 0;
+		box-sizing: border-box;
+	}
+	.dealPage form .firstSpan{
+		color: #51C1C2;
+	}
+	.dealPage form .otherSpan{
+		color: #F38381;
+	}
+	.dealPage form .dealSpan{
+		display: inline-block;
+		margin-right: 10px;
+		cursor: pointer;
+	}
+	.dealPage .layui-input-block{
+		margin-left: 80px;
+		min-height: 18px;
+	}
+	.dealPage  .layui-form-label{
+		width: 40px;
+	}
+	.dealPage .layui-btn{
+		width: 65px;
+		height: 30px;
+		line-height: 24px;
+		padding: 3px 0;  
+		border-radius: 8px; 
+	}
+	.dealPage .layui-btn:nth-child(1){
+		margin-left: 250px;
+	}
+</style>
+<body>
+	<div class="dealPage">
+		<form class="layui-form" action="">
+		<!-- 单选框 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<input name="JC" value="同意解除" title="同意解除" type="radio">
+					<input name="JC" value="不予解除" title="不予解除" type="radio">
+				</div>
+			</div>
+
+			<!-- 输入框 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea class="layui-textarea"></textarea>
+				</div>
+			</div>
+
+			<!-- 添加附件 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+				<!-- 添加附加功能 -->
+					<span class="firstSpan dealSpan"><i class="layui-icon">&#xe64c;</i> 添加附件</span>
+					<!-- 添加的附件 -->
+					<span class="otherSpan dealSpan"><i class="layui-icon">&#xe64c;</i> 添加的附件1 <i class="layui-icon">&#xe640;</i></span>
+					<span class="otherSpan dealSpan"><i class="layui-icon">&#xe64c;</i> 添加的附件1 <i class="layui-icon">&#xe640;</i></span>
+				</div>
+			</div>
+
+			<!-- 添加文书 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+				<!-- 添加附加功能 -->
+					<span class="firstSpan dealSpan"><i class="layui-icon">&#xe60a;</i> 文书</span>
+					<!-- 添加的附件 -->
+				</div>
+			</div>
+
+			<!-- 添加笔录 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+				<!-- 添加附加功能 -->
+					<span class="firstSpan dealSpan"><i class="layui-icon">&#xe642;</i> 笔录</span>
+					<!-- 添加的附件 -->
+				</div>
+			</div>
+
+			<!-- 操作按钮 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button id="createBtn" class="layui-btn">生成函</button>
+					<button id="cancelBtn" class="layui-btn layui-btn-danger">取消</button>	
+				</div>
+			</div>
+		</form>
+	</div>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+</body>
+</html>

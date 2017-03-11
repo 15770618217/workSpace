@@ -1,0 +1,64 @@
+/*=============================
+tousu-wrap投诉模块
+===============================*/
+.tousu-wrap{
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+}
+.tousu-wrap header{
+	width: 100%;
+	height: 5%;
+}
+.tousu-wrap header h2{
+	width: 150px;
+	height: 45px;
+	line-height: 45px;
+	font-size: 18px;
+	color: #000;
+	text-align: center;
+	border-bottom: 1px solid #73B0A8;
+	box-sizing: border-box;
+}
+/*=============================
+section 主体表单部分
+ ==============================*/
+.tousu-wrap section{
+	width: 100%;
+	height: 95%;
+}
+.tousu-wrap form {
+	width: 500px;
+	height: 60%;
+	margin: 0 auto;
+	padding-top: 100px;
+}
+.tousu-wrap form .layui-input{
+	border-radius: 8px;
+}
+.tousu-wrap form .layui-form-label{
+	width: 100px;
+	font-size: 14px;
+}
+.tousu-wrap form .layui-input-block{
+	margin-left: 150px;
+}
+.tousu-wrap form .layui-btn{
+	width: 100px;
+	height: 35px;
+	border-radius: 10px;
+}
+.tousu-wrap form .layui-btn:nth-child(1){
+	float: left;
+}
+.tousu-wrap form .layui-btn:nth-child(2){
+	float: right;
+}
+/*======================================
+span提示错误
+ */
+.tousu-wrap form .errorWord{
+	display: none;
+	margin-left: 152px;
+	color: red;
+}	
