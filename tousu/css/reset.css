@@ -26,7 +26,10 @@ a:active {star:expression(this.onFocus=this.blur());}
 ::selection {color: #fff;background-color: #4C6E78;}      
 ::-moz-selection {color: #fff;background-color: #4C6E78;}   
 */  
-  
+/* 左浮动 */
+.lf{float: left;}
+/* 右浮动 */
+.rf{float: right;}
 /*清除浮动*/  
 .clear{clear: both;}  
   
