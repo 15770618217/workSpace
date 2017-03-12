@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>反电诈大数据系统登录界面</title>
+	<link rel="stylesheet" href="css/Normalize.css">
+	<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<div class="login-wrap">
+	<!-- 定位居中 -->
+		<div class="login-content">
+			<!-- 图片 -->
+			<div class="insertPic">
+				<img src="imgs/数据组.png" alt="">
+			</div>
+			<!-- 登录框 -->
+			<div class="login-box">
+				<!-- 标题 -->
+				<h1>反电诈大数据系统</h1>
+				<form action="" method="post" id="login_form">
+					<ul>
+						<li>
+							<label for="userName"></label>
+							<input type="text" id="userName" name="userName" placeholder="user" autocomplete="off" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+							<img src="imgs/人.png" alt="用户名">
+							<b></b>
+							<i class="cleanBtn">×</i>
+							<span>&nbsp;请输入用户名！</span>
+						</li>
+						<li>
+							<label for="password"></label>
+							<input type="password" id="password" name="password" placeholder="password" autocomplete="off" onkeyup="this.value=this.value.replace(/\s+/g,'')">
+							<img src="imgs/矢量智能对象.png" alt="密码">
+							<b></b>
+							<i class="cleanBtn">×</i>
+							<span>&nbsp;密码错误！</span>
+						</li>
+						
+					</ul>
+				</form>
+					<button class="btn loginBtn">登录</button>
+					<button class="btn PKIBtn">PKI登录</button>
+					<span class="WJMM">忘记密码?</span>
+			</div>
+		</div>
+	</div>
+	<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="js/login.js"></script>
+	<script src="js/placeholder.js"></script>
+</body>
+</html>
