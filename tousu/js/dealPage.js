@@ -1,3 +1,8 @@
+/**
+ * title:"保存投诉弹窗部分的JS"
+ * Author:allenzjw
+ * Time:3/11
+ */
 var html = '';
 	// 添加附件
 	$('#addFJ').click(function(){

@@ -1,3 +1,8 @@
+/**
+ * title:"保存投诉查询部分的JS"
+ * Author:allenzjw
+ * Time:3/11
+ */
 //点击处理按钮 弹出层
 //页面层
 $('#tsTable tbody').on('click','.doBtn',function(){
