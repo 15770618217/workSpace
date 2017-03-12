@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>投诉界面</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="lib/layui/css/layui.css">
+	<!-- <link rel="stylesheet" href="//res.layui.com/layui/build/css/layui.css"  media="all"> -->
+	<style>
+		/*=============================
+		tousu-wrap投诉模块
+		===============================*/
+		
+		.tousu-wrap{
+			width: 100%;
+			height: 100%;
+			background-color: #fff;
+		}
+		.tousu-wrap header{
+			width: 100%;
+			height: 5%;
+		}
+		.tousu-wrap header h2{
+			width: 150px;
+			height: 45px;
+			line-height: 45px;
+			font-size: 18px;
+			color: #000;
+			text-align: center;
+			border-bottom: 1px solid #73B0A8;
+			box-sizing: border-box;
+		}
+		/*=============================
+		section 主体表单部分
+		 ==============================*/
+		.tousu-wrap section{
+			width: 100%;
+			height: 95%;
+			/*background-color: #eee;*/
+		}
+
+		.tousu-wrap form {
+			width: 500px;
+			height: 60%;
+			margin: 0 auto;
+			padding-top: 100px;
+		}
+		.tousu-wrap form .layui-input{
+			border-radius: 8px;
+		}
+		.tousu-wrap form .layui-form-label{
+			width: 100px;
+			font-size: 14px;
+		}
+		.tousu-wrap form .layui-input-block{
+			margin-left: 150px;
+		}
+		.tousu-wrap form .layui-btn{
+			width: 100px;
+			height: 35px;
+			border-radius: 10px;
+		}
+		.tousu-wrap form .layui-btn:nth-child(1){
+			float: left;
+		}
+		.tousu-wrap form .layui-btn:nth-child(2){
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<div class="tousu-wrap">
+		<!-- 投诉信息登记 -->
+		<header>
+			<h2>投诉信息登记</h2>
+		</header>
+		<!-- 投诉表单 -->
+		<section>
+			<form class="layui-form" action="">
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="name">投诉人:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="name" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="card"><span style="color: red;">* </span>投诉人身份证:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="card" name="card" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="phone"><span style="color: red;">* </span>手机号码:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="phone" name="phone" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="zhlx">投诉类型:</label>
+				    <div class="layui-input-block">
+				        <select id="zhlx" name="zhlx" lay-verify="required" class="layui-input">
+					        <option value=""></option>
+					        <option value="0">手机号</option>
+					        <option value="1">银行账号</option>
+					    </select>
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="tsSAZH"><span style="color: red;">* </span>涉案账号:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="tsSAZH" name="tsSAZH" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="cardLocation">归属行:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="cardLocation" name="cardLocation" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="cardName"><span style="color: red;">* </span>账户卡主:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="cardName" name="cardName" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="subPolice">案件分局:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="subPolice" name="subPolice" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+				
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="comContext">投诉内容:</label>
+				    <div class="layui-input-block">
+				        <textarea placeholder="请输入内容" id="comContext" class="layui-textarea"></textarea>
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" id="lay-submit">立即提交</button>
+				      <button class="layui-btn layui-btn-danger" id="cancelBtn">取消</button>
+				    </div>
+				</div>
+			</form>
+		</section>
+	</div>
+<script src="js/jquery-2.1.0.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+	// layui.use('form', function(){
+	//   var form = layui.form();
+	  
+	//   //监听提交
+	//   form.on('submit(formTs)', function(data){
+	//   	var upData = JSON.stringify(data.field);
+	//     console.log(upData);
+	//     return false;
+	//   });
+	// });
+
+	/**
+	*用途：检查输入的手机号是否正确
+	*输入：
+	*str: 字符串
+	*返回：如果通过验证返回true,否则返回false
+	 */
+	function checkMobile(str){
+		var reg = /^[1][3][0-9]{9}$/;
+		var re = new RegExp(reg);
+		if (re.test(str)) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 用途：检查身份证号是否正确
+	 * 输入：
+	 * str：字符串
+	 * 返回：如果通过验证返回true,否则返回false
+	 */
+	function checkCard(str){
+		// 15位数身份证号码正则表达式
+		var reg1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;
+		// 18位数身份证正则表达式
+		var reg2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[A-Z])$/;
+
+		if (str.match(reg1) === null && str.match(reg2) === null) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+
+	// 调用手机验证
+	$('#phone').blur(function(){
+		var telStr = $(this).val();
+		alert(checkMobile(telStr));
+	});
+	// 调用身份证验证
+	$('#card').blur(function(){
+		var cardStr = $(this).val();
+		// alert(checkCard(cardStr));
+	});
+
+	// 投诉类型判断 ——> 选择涉案账号的正则判断
+	$('#tsSAZH').blur(function(){
+		var lxVal = $('#zhlx').val();
+		var accountStr = $(this).val();
+
+		if (lxVal === '0') {
+			alert(checkMobile(accountStr));
+		}else if(lxVal === '1'){
+			alert(checkCard(accountStr));
+		}else{
+			// alert('请选择涉案类型');
+		}
+	});
+
+	// ajax请求上传
+	$('#lay-submit').click(function(){
+		var name = $('#name').val();
+		var card = $('#card').val();
+		var phone = $('#phone').val();
+		var zhlx = $('#zhlx').val();
+		var PHONENUM = $('#tsSAZH').val();
+		var BANKNUM = $('#tsSAZH').val();
+		var cardLocation = $('#cardLocation').val();
+		var cardName = $('#cardName').val();
+		var subPolice = $('#subPolice').val();
+		var comContext = $('#comContext').val();
+		var data = '"name":"'+name+'","card":"'+card+'","phone":"'+phone+'","zhlx":"'+zhlx+'","PHONENUM":"'+PHONENUM+'","BANKNUM":"'+BANKNUM+'","cardLocation":"'+cardLocation+'","cardName":"'+cardName+'","subPolice":"'+subPolice+'","comContext":"'+comContext+'"';
+		console.log(data);
+		$.ajax({
+		    type: 'POST',
+		    url: '',
+		    data: data,
+		    success:function(data){
+
+		    }
+		});
+	});
+		
+	
+</script>
+</body>
+</html>
