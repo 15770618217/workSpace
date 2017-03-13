@@ -45,7 +45,7 @@
 				<div class="layui-form-item">
 				    <label class="layui-form-label" for="zhlx">投诉类型:</label>
 				    <div class="layui-input-block">
-				        <select id="zhlx" name="zhlx" lay-verify="required" class="layui-input">
+				        <select id="zhlx" name="zhlx" lay-verify="required" class="layui-input" lay-filter="leixing">
 					        <option value=""></option>
 					        <option value="0">手机号</option>
 					        <option value="1">银行账号</option>
@@ -59,7 +59,7 @@
 				    <div class="layui-input-block">
 				       <input type="text" id="tsSAZH" name="tsSAZH" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 				    </div>
-				    <span class="errorWord">涉案账号不能为空</span>
+				    <span class="errorWord">请输入正确的涉案账号</span>
 				</div>
 
 				<div class="layui-form-item">
@@ -92,14 +92,11 @@
 				    </div>
 				    <span class="errorWord">投诉内容不能为空</span>
 				</div>
-
-				<div class="layui-form-item">
-				    <div class="layui-input-block">
-				      <button class="layui-btn" id="lay-submit">立即提交</button>
-				      <button class="layui-btn layui-btn-danger" id="cancelBtn">取消</button>
-				    </div>
-				</div>
 			</form>
+			<div class="buttonArea">
+				<button class="layui-btn" id="lay-submit">立即提交</button>
+				<button class="layui-btn layui-btn-danger" id="cancelBtn">取消</button>
+			</div>
 		</section>
 	</div>
 <script src="js/jquery-2.1.0.js"></script>

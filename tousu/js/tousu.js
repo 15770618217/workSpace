@@ -3,16 +3,34 @@
  * Author:allenzjw
  * Time:3/11
  */
-// layui.use('form', function(){
-	//   var form = layui.form();
-	  
-	//   //监听提交
-	//   form.on('submit(formTs)', function(data){
-	//   	var upData = JSON.stringify(data.field);
-	//     console.log(upData);
-	//     return false;
-	//   });
-	// });
+layui.use(['form','jquery'], function(){
+	  	var form = layui.form();
+	  	// 对下拉框绑定监听事件 如果下拉内容改变触发事件 对涉案账号进行验证
+		form.on('select(leixing)',function(data){
+		 	// 投诉类型
+		    var lxVal = data.value;
+		    var _this = $('#tsSAZH');
+			var sazhStr =_this.val();
+			// 投诉类型内容
+			if (sazhStr === '') {
+				_this.parent().next().css('display','block');
+			}else if (lxVal === '0') {
+				// 手机号验证
+				if (checkMobile(sazhStr) === true) {
+					console.log('tel is true!');
+				}else{
+					_this.parent().next().css('display','block');
+				}
+			}else if(lxVal === '1'){
+				// 身份证验证
+				if (checkCard(sazhStr) === true) {
+					console.log('card is true!');
+				}else{
+					_this.parent().next().css('display','block');
+				}
+			} 
+		});
+	});
 
 	/**
 	*用途：检查输入的手机号是否正确
@@ -21,7 +39,7 @@
 	*返回：如果通过验证返回true,否则返回false
 	 */
 	function checkMobile(str){
-		var reg = /^[1][3][0-9]{9}$/;
+		var reg = /^[1][3,5,8,9][0-9]{9}$/;
 		var re = new RegExp(reg);
 		if (re.test(str)) {
 			return true;
@@ -48,12 +66,14 @@
 			return true;
 		}
 	}
+
 	// 验证投诉人
 	$('#name').blur(function(){
 		var _this = $(this);
 		var nameStr = _this.val();
 		if (nameStr === '') {
 			_this.parent().next().css('display','block');
+			$('#lay-submit').attr('disabled','disabled');
 		} 
 	});
 	$('#name').on('input',function(){
@@ -73,6 +93,7 @@
 			console.log('tel is true!');
 		}else{
 			_this.parent().next().css('display','block');
+			$('#lay-submit').attr('disabled','disabled');
 		}
 	});
 	$('#phone').on('input',function(){
@@ -93,6 +114,7 @@
 			console.log('card is true!');
 		}else{
 			_this.parent().next().css('display','block');
+			$('#lay-submit').attr('disabled','disabled');
 		}
 	});
 	$('#card').on('input',function(){
@@ -116,17 +138,46 @@
 			_this.parent().next().css('display','none');
 		}else{
 			_this.parent().next().css('display','block');
+			$('#lay-submit').attr('disabled','disabled');
 		}
 	});
 
 	// 涉案账号验证
+	// 失去焦点触发事件
 	$('#tsSAZH').blur(function(){
 		var _this = $(this);
 		var sazhStr = _this.val();
+		// 投诉类型内容
+		var lxVal = $('#zhlx').val();
 		if (sazhStr === '') {
 			_this.parent().next().css('display','block');
+		}else if (lxVal === '0') {
+			// 手机号验证
+			if (checkMobile(sazhStr) === true) {
+				console.log('tel is true!');
+			}else{
+				_this.parent().next().css('display','block');
+			}
+		}else if(lxVal === '1'){
+			// 身份证验证
+			if (checkCard(sazhStr) === true) {
+				console.log('card is true!');
+			}else{
+				_this.parent().next().css('display','block');
+			}
 		} 
+
+		// 涉案账号失去焦点 发起ajax请求 传递涉案账号给后台
+		$.ajax({
+			type:'POST',
+			url:"",
+			data:{"lxVal":lxVal,"sazhStr":sazhStr},
+			success:function(data){
+
+			}
+		});
 	});
+
 	$('#tsSAZH').on('input',function(){
  		var _this = $(this);
 		var sazhStr = _this.val();
@@ -195,16 +246,19 @@
 		var cardName = $('#cardName').val();
 		var subPolice = $('#subPolice').val();
 		var comContext = $('#comContext').val();
+		// 如果表单内容 存在空 则禁止提交
 		var data = '"name":"'+name+'","card":"'+card+'","phone":"'+phone+'","zhlx":"'+zhlx+'","PHONENUM":"'+PHONENUM+'","BANKNUM":"'+BANKNUM+'","cardLocation":"'+cardLocation+'","cardName":"'+cardName+'","subPolice":"'+subPolice+'","comContext":"'+comContext+'"';
-		console.log(data);
-		// $.ajax({
-		//     type: 'POST',
-		//     url: '',
-		//     data: data,
-		//     success:function(data){
-
-		//     }
-		// });
+			// console.log(data);
+			$.ajax({
+				type: 'POST',
+				url: '',
+				data: data,
+				success:function(data){
+				    // 提交成功后 清空表单
+				    $('#cancelBtn').click();
+				}
+			});
 	});
+
 		
 	

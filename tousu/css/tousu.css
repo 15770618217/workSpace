@@ -29,7 +29,7 @@ section 主体表单部分
 }
 .tousu-wrap form {
 	width: 500px;
-	height: 60%;
+	height: auto;
 	margin: 0 auto;
 	padding-top: 100px;
 }
@@ -53,6 +53,20 @@ section 主体表单部分
 }
 .tousu-wrap form .layui-btn:nth-child(2){
 	float: right;
+}
+.tousu-wrap .buttonArea{
+	width: 500px;
+	height: 50px;
+	margin: 20px auto;
+}
+.tousu-wrap .buttonArea button{
+	float: left;
+}
+.tousu-wrap .buttonArea button:nth-child(1){
+	margin-left: 150px;
+}
+.tousu-wrap .buttonArea button:nth-child(2){
+	margin-left: 194px;
 }
 /*======================================
 span提示错误
