@@ -114,6 +114,12 @@ body{
 	font-size:14px;
 }
 /*============================
+时间input框
+*/
+.link-content .timeInput>input{
+    height: 38px!important;
+}
+/*============================
 操作
 ============================== */ 
 .handelClick{

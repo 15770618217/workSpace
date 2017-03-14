@@ -57,6 +57,11 @@ $('#searchBtn').click(function(){
 	});
 });
 /**
+ *父窗口那子窗口的数据test
+ */
+
+
+/**
  * 点击自定义表头 弹窗
  */
 $('#changeTltle').click(function(){
@@ -72,24 +77,60 @@ $('#changeTltle').click(function(){
  * 点击详情 弹窗 账户信息
  */
 $('#ljTable tbody').on('click','.detailsClick',function(){
+	var _this = $(this),
+		data =_this.parent().siblings(),
+		arr = [];
+	for(var i = 1; i< data.length; i++){
+		// console.log($(data[i]).text());
+		arr.push($(data[i]).text());
+	}
+	// console.log(arr);
 	layer.open({
 		type: 2,
 		skin: 'CLYM-style',
 		area: ['950px','560px'],
 		title: '账户信息',
-		content: 'accountDetails.html'
+		content: 'accountDetails.html',
+		success: function(layero, index){
+		    var body = layer.getChildFrame('body',index);
+		    var iframeWin = window[layero.find('iframe')[0]['name']];
+		    // console.log(arr); //得到iframe页的body内容
+		    // console.log(body.find('input'));
+		    var inputList = body.find('input');
+		    for(var j = 0; j< inputList.length; j++){
+		    	$(inputList[j]).val(arr[j]);
+		    }
+		}
 	});
 });
 /**
  * 点击修改 弹窗 修改账户信息
  */
 $('#ljTable tbody').on('click','.modifyClick',function(){
+	var _this = $(this),
+		data =_this.parent().siblings(),
+		arr = [];
+	for(var i = 1; i< data.length; i++){
+		// console.log($(data[i]).text());
+		arr.push($(data[i]).text());
+	}
+	// console.log(arr);
 	layer.open({
 		type: 2,
 		skin: 'CLYM-style',
 		area: ['830px','310px'],
 		title: '修改账户信息',
-		content: 'modifyDetails.html'
+		content: 'modifyDetails.html',
+		success: function(layero, index){
+		    var body = layer.getChildFrame('body',index);
+		    var iframeWin = window[layero.find('iframe')[0]['name']];
+		    // console.log(arr); //得到iframe页的body内容
+		    // console.log(body.find('input'));
+		    var inputList = body.find('input');
+		    for(var j = 0; j< inputList.length; j++){
+		    	$(inputList[j]).val(arr[j]);
+		    }
+		}
 	});
 }); 
 /**

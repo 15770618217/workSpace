@@ -52,15 +52,15 @@
 	           <!-- 发生时间 -->
 				<label class="layui-form-label">发生时间</label>
 				<div class="layui-input-inline timeInput">
-				   <input type="text" name="time-start" placeholder="" autocomplete="off" class="layui-input">
+				   <input type="text" name="time-start" placeholder="" autocomplete="off" class="layui-input laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
 				</div>
 				<div class="layui-form-mid">至</div>
 				<div class="layui-input-inline timeInput">
-				    <input type="text" name="time-end" placeholder="" autocomplete="off" class="layui-input">
+				    <input type="text" name="time-end" placeholder="" autocomplete="off" class="layui-input laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
 				</div>
 			</div>
-	        <input type="button" id="resetBtn" class="layui-btn layui-btn-danger searchFormBtn" value="重置"/>
-	        <input type="button" id="searchBtn" class="layui-btn searchFormBtn" value="查询"/>
+	        <button type="reset" id="resetBtn" class="layui-btn layui-btn-danger searchFormBtn">重置</button>
+	        <input type="button" id="searchBtn" class="layui-btn searchFormBtn" value="查询">
 	    </form>
 
 	    <!--案件列表-->
@@ -87,11 +87,11 @@
 	        </table>
 	        <!-- 分页器 -->
 	        <div id="demo4" class="pager"></div>
-
-	    </div>
+		</div>
 	</section>
 <script src="js/jquery-2.1.0.js"></script>
 <script src="lib/layui/lay/dest/layui.all.js"></script>
+<script src="js/laydate-master/laydate.js"></script>
 <script src="js/link.js"></script>
 </body>
 </html>

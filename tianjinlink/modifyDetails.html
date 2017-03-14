@@ -40,50 +40,68 @@
 <body>
 	<div class="modifyDetails-wrap">
 	<!-- 表单 显示内容 -->
-			<form class="layui-form">
+			<form class="layui-form" action="">
 				<div class="layui-form-item">
 					<label class="layui-form-lable">接警单编号</label>
 					<div class="layui-input-inline">
-						<input type="text" value="2342342" class="layui-input">
+						<input type="text" name="JJDBH" value="" class="layui-input">
 					</div>
 
 					<label class="layui-form-lable">姓名</label>
 					<div class="layui-input-inline">
-						<input type="text" value="欧阳娜娜" class="layui-input">
+						<input type="text" name="XM" value="" class="layui-input">
 					</div>
 				</div>
 
 				<div class="layui-form-item">
 					<label class="layui-form-lable">涉案网址</label>
 					<div class="layui-input-inline">
-						<input type="text" value="wwww.lol.com" class="layui-input">
+						<input type="text" name="SAWZ" value="" class="layui-input">
 					</div>
 
 					<label class="layui-form-lable">网址名称</label>
 					<div class="layui-input-inline">
-						<input type="text" value="黑客网站" class="layui-input">
+						<input type="text" name="WZMC" value="" class="layui-input">
 					</div>
 				</div>
 
 				<div class="layui-form-item">
 					<label class="layui-form-lable">链接类型</label>
 					<div class="layui-input-inline">
-						<input type="text" value="中奖信息" class="layui-input">
+						<input type="text" name="LJLX" value="" class="layui-input">
 					</div>
 
 					<label class="layui-form-lable">发生时间</label>
 					<div class="layui-input-inline">
-						<input type="text" value="22017-3-13 10:00" class="layui-input">
+						<input type="text" name="FSSJ" value="" class="layui-input">
 					</div>
 				</div>
+				<!-- 按钮区 -->
+				<div class="buttonArea">
+					<button type="submit" class="layui-btn submitBtn" lay-submit lay-filter="modifyForm">提交</button>
+					<button type="reset" class="layui-btn layui-btn-danger">取消</button>
+				</div>
 			</form>
-			<div class="buttonArea">
-				<button class="submintBtn layui-btn">提交</button>
-				<button class="cancelBtn layui-btn layui-btn-danger">取消</button>
-			</div>
 	</div>
 
 <script src="js/jquery-2.1.0.js"></script>
 <script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+	var index = parent.layer.getFrameIndex(window.name);//获取子窗口索引
+	console.log(index);
+	layui.use('form', function(){
+	  var form = layui.form();
+	  
+	  //监听提交
+	  form.on('submit(modifyForm)', function(data){
+	    var dataString = JSON.stringify(data.field);
+	    var dataObj = data.field;
+	    // console.log(dataObj.XM);
+	    console.log(parent.$('#ljTable tr').html());
+	    console.log(dataObj);
+	    return false;
+	  });
+	});
+</script>
 </body>
 </html>
