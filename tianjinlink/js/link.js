@@ -61,11 +61,11 @@ $('#searchBtn').click(function(){
  */
 $('#changeTltle').click(function(){
 	layer.open({
-		type: '2',
+		type: 2,
 		skin: 'CLYM-style',
 		area: ['490px','300px'],
 		title: '自定义表头',
-		content: ''
+		content: 'changeTitle.html'
 	});
 });
 /**
@@ -77,7 +77,7 @@ $('#ljTable tbody').on('click','.detailsClick',function(){
 		skin: 'CLYM-style',
 		area: ['950px','560px'],
 		title: '账户信息',
-		content: ''
+		content: 'accountDetails.html'
 	});
 });
 /**
@@ -89,9 +89,9 @@ $('#ljTable tbody').on('click','.modifyClick',function(){
 		skin: 'CLYM-style',
 		area: ['830px','310px'],
 		title: '修改账户信息',
-		content: ''
+		content: 'modifyDetails.html'
 	});
-});
+}); 
 /**
  * 点击标记 弹窗 标记
  */

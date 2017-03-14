@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义表头</title>
+</head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
+<style>
+	.changeTitle-wrap{
+		width: 100%;
+		height: 100%;
+		padding: 25px 0;
+		box-sizing: border-box;
+	}
+	.changeTitle-wrap .addListHeader{
+		overflow:hidden;
+	}
+	.changeTitle-wrap .addListHeader li{
+	    float: left;
+	    width: 128px;
+	    height: 30px;
+	    margin: 12px 15px;
+	    border: 1px dashed #ccc;
+	    text-align: center;
+	    line-height: 32px;
+	    border-radius: 4px;
+	    font-size: 14px;
+	    cursor: pointer;
+	}
+	.changeTitle-wrap .addListHeader li .layui-icon{
+	    margin-left: 10px;
+	    opacity: .6;
+	}
+	.changeTitle-wrap .buttonArea{
+		text-align: right;
+		padding-right: 25px;
+	}
+	.changeTitle-wrap .buttonArea button{
+		width: 50px;
+		height: 25px;
+		line-height: 25px;
+		padding: 0; 
+		text-align: center;
+		border-radius: 8px;
+	}
+</style>
+<body>
+	<div class="changeTitle-wrap">
+		    <ul id="delete-box" class="addListHeader">
+		         <li><span name='AJBH'>案件编号</span><i class="layui-icon">&#xe640;</i></li>
+		         <li><span name='XM'>姓名</span><i class="layui-icon">&#xe640;</i></li>
+		         <li><span name='SAWZ'>涉案网址</span><i class="layui-icon">&#xe640;</i></li>
+		         <li><span name='WZMC'>网站名称</span><i class="layui-icon">&#xe640;</i></li>
+		         <li><span name='LJLX'>链接类型</span><i class="layui-icon">&#xe640;</i></li>
+		    </ul>
+	     	<hr/>
+		    <ul id="add-box" class="addListHeader">
+		         <li><span name='FSSJ'>发生时间</span><i class="layui-icon">&#xe608;</i></li>
+		    </ul>
+		    <div class="buttonArea">
+		     	<button id="submitBtn" class="layui-btn">提交<tton>
+		     	<button id="cancelBtn" class="layui-btn layui-btn-danger">取消<tton>
+		    </div>
+	</div>
+<script src="js/jquery-2.1.0.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+//自定义表头btn
+//
+$('#delete-box').on('click','li',function () {
+	$('#add-box').append($(this));
+	$(this).children('i').html('&#xe608;');
+	
+});
+
+$('#add-box').on('click','li',function () {
+	$('#delete-box').append($(this));
+	$(this).children('i').html('&#xe640;');	
+});
+</script>
+</body>
+</html>

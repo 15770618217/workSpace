@@ -10,28 +10,42 @@
 	.sign-wrap{
 		width: 100%;
 		height: 100%;
-		padding: 20px 35px 20px 0;
+		padding: 20px 35px;
 		box-sizing: border-box;
 	}
-	.sign-wrap .layui-form-item{ 
+	.sign-wrap .layui-form-item:nth-child(1){
+		margin-bottom: 0!important; 
+	}
+	/*=========================
+	备注
+	*/
+	.sign-wrap p{
+		height: 30px;
+		line-height: 30px;
+		padding-left: 50px;
+	}
+	.sign-wrap .layui-textarea{
+		float: right;
+		margin-right: 60px;
 	}
 	.sign-wrap .buttonArea{
-		
+		text-align: right;
+		padding-right: 60px;
 	}
 	.sign-wrap .layui-btn{
 		width: 50px;
 		height: 25px;
 		line-height: 25px;
 		padding: 0;
-		text-align: center;
 		border-radius: 8px;
 	}
+
 </style>
 <body>
 	<div class="sign-wrap">
 		<form class="layui-form" action="">
 			<div class="layui-form-item">
-				<label class="layui-form-label" style="width: 180px;">标记为黑名单：</label>
+				<label class="layui-form-label" style="width: 170px;">标记为黑名单：</label>
 				<div class="layui-input-block">
 					<input type="radio" name="sign" value="是" title="是">
 					<input type="radio" name="sign" value="否" title="否">
@@ -39,7 +53,7 @@
 			</div>
 
 			<div class="layui-form-item">
-				<label class="layui-form-label layui-input-block">备注</label>
+				<p>备注</p>
 				<div class="layui-input-block">
 					<textarea name="beizhu" class="layui-textarea"></textarea>
 				</div>

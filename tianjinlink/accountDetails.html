@@ -6,9 +6,154 @@
 </head>
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="lib/layui/css/layui.css">
+<style>
+	.accountDetails-wrap{
+		width: 100%;
+		height: 100%;
+		padding: 20px 35px;
+		box-sizing: border-box;
+	}
+	.accountDetails-wrap .content-box{
+		width: 100%;
+		height: 180px;
+		padding: 20px;
+		margin-bottom: 10px;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+	}
+	.accountDetails-wrap .content-title{
+		width: auto;
+		height: 30px;
+		line-height: 30px;
+	}
+	.accountDetails-wrap span{
+		display: inline-block;
+		width: 75px;
+		height: 30px;
+		text-align: center;
+		cursor: pointer;
+	}
+	.accountDetails-wrap .content-title a{
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		line-height: 14px;
+		font-size: 12px;
+		text-align: center;
+		border: 1px solid red;
+		border-radius: 50%;
+		color: red;
+	}
+	.accountDetails-wrap .content-title span.active{
+		color: #51C1C2;
+		border-bottom: 1px solid #51C1C2;
+	}
+	.accountDetails-wrap .layui-form-lable{
+		float: left;
+		width: 80px;
+		height: 38px;
+		line-height: 38px;
+		padding-right: 20px;
+		text-align: right;
+	}
+	.accountDetails-wrap .layui-input-inline{
+		width: 288px;
+	}
+</style>
 <body>
+	<div class="accountDetails-wrap">
+		<!-- 基本信息 -->
+		<p class="content-title">
+			<span class="active">基本信息</span>
+		</p>
+		<div class="base-data content-box">
+			<!-- 表单 显示内容 -->
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-lable">接警单编号</label>
+					<div class="layui-input-inline">
+						<input type="text" value="2342342" class="layui-input" readonly="true">
+					</div>
 
+					<label class="layui-form-lable">姓名</label>
+					<div class="layui-input-inline">
+						<input type="text" value="欧阳娜娜" class="layui-input" readonly="true">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-lable">涉案网址</label>
+					<div class="layui-input-inline">
+						<input type="text" value="wwww.lol.com" class="layui-input" readonly="true">
+					</div>
+
+					<label class="layui-form-lable">网址名称</label>
+					<div class="layui-input-inline">
+						<input type="text" value="黑客网站" class="layui-input" readonly="true">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-lable">链接类型</label>
+					<div class="layui-input-inline">
+						<input type="text" value="中奖信息" class="layui-input" readonly="true">
+					</div>
+
+					<label class="layui-form-lable">发生时间</label>
+					<div class="layui-input-inline">
+						<input type="text" value="22017-3-13 10:00" class="layui-input" readonly="true">
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- 相关案件 -->
+		<p class="content-title" id="bottom-title">
+			<span class="XGAJ active">相关案件<a>10</a></span>&nbsp;
+			<b>|</b>&nbsp;
+			<span class="XGZL">相关资料<a>2</a></span>&nbsp;
+			<b>|</b>&nbsp;
+			<span class="CLGC">处理过程</span>&nbsp;
+			<b>|</b>&nbsp;
+			<span class="TSXX">投诉信息</span>
+		</p>
+		<div class="connect-case content-box">
+			<ul id="XGAJ">
+				<li>1、案件信息</li>
+				<li>2、案件信息</li>
+				<li>3、案件信息</li>
+			</ul>
+			<ul id="XGZL" style="display: none;">
+				<li>1、资料信息</li>
+				<li>2、资料信息</li>
+				<li>3、资料信息</li>
+			</ul>
+			<ul id="CLGC" style="display: none;">
+				<li>1、处理过程</li>
+				<li>2、处理过程</li>
+				<li>3、处理过程</li>
+			</ul>
+			<ul id="TSXX" style="display: none;">
+				<li>1、投诉信息</li>
+				<li>2、投诉信息</li>
+				<li>3、投诉信息</li>
+			</ul>
+		</div>
+	</div>
 <script src="js/jquery-2.1.0.js"></script>
 <script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+	// 点击title切换内容
+	$('#bottom-title span').click(function(){
+		var _this = $(this);
+		_this.addClass('active')
+			   .siblings()
+			   .removeClass('active');
+		var className = (_this.attr('class')).slice(0,4);
+		// console.log(className);
+		$('#'+className).css('display','block')
+					   .siblings()
+					   .css('display','none');
+	});
+</script>
 </body>
 </html>
