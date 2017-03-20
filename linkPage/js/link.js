@@ -5,6 +5,7 @@
  */
 
 //初始化
+var curr = '';
 $(function(){
   // 加载完成后生成 thead
   var initHead =
@@ -151,24 +152,28 @@ $('#changeTltle').click(function(){
         //遍历ljTable 下 thead中的th如果arr存在 则设置显示 否则显示隐藏
         var thList = $('#ljTable thead tr th');
         var tdList = $('#ljTable tbody tr td');
-        console.log(tdList);
+        //console.log(tdList);
         for(var i=0; i<thList.length; i++){
             // console.log(thList[i]);
             for(var j=0; j<arr.length; j++){
               // console.log('启动')
               if($(thList[i]).attr('name') === arr[j]){
                 // console.log('存在');
-                $(thList[i]).css('display','none');
+                $(thList[i]).hide();
+              }else{
+                  $(thList[i]).show();
               }
             }
         }
         for(var i=0; i<tdList.length; i++){
             // console.log(tdList);
             for(var j=0; j<arr.length; j++){
-                // console.log('启动')
-                if($(tdList[i]).attr('name') === arr[j]){
-                // console.log('存在');
-                $(tdList[i]).css('display','none');
+              // console.log('启动')
+              if($(tdList[i]).attr('name') === arr[j]){
+              // console.log('存在');
+                $(tdList[i]).hide();
+              }else{
+                  $(tdList[i]).show();
               }
             }
         }
