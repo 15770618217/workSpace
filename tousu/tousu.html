@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>投诉界面</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="lib/layui/css/layui.css">
+	<link rel="stylesheet" href="css/tousu.css">
+</head>
+<body>
+	<div class="tousu-wrap">
+		<!-- 投诉信息登记 -->
+		<header>
+			<h2>投诉信息登记</h2>
+		</header>
+		<!-- 投诉表单 -->
+		<section>
+			<form class="layui-form" action="">
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="name">投诉人:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="name" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">投诉人不能为空</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="card"><span style="color: red;">* </span>投诉人身份证:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="card" name="card" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">请输入正确的身份证号码</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="phone"><span style="color: red;">* </span>手机号码:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="phone" name="phone" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">请输入正确的手机号码</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="zhlx">投诉类型:</label>
+				    <div class="layui-input-block">
+				        <select id="zhlx" name="zhlx" lay-verify="required" class="layui-input" lay-filter="leixing">
+					        <option value=""></option>
+					        <option value="0">手机号</option>
+					        <option value="1">银行账号</option>
+					    </select>
+				    </div>
+				    <span class="errorWord">请选择投诉类型</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="tsSAZH"><span style="color: red;">* </span>涉案账号:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="tsSAZH" name="tsSAZH" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">请输入正确的涉案账号</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="cardLocation">归属行:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="cardLocation" name="cardLocation" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="cardName"><span style="color: red;">* </span>账户卡主:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="cardName" name="cardName" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">请输入正确的账号卡主</span>
+				</div>
+
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="subPolice">案件分局:</label>
+				    <div class="layui-input-block">
+				       <input type="text" id="subPolice" name="subPolice" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+				    </div>
+				    <span class="errorWord">请输入正确的案件分局</span>
+				</div>
+				
+				<div class="layui-form-item">
+				    <label class="layui-form-label" for="comContext">投诉内容:</label>
+				    <div class="layui-input-block">
+				        <textarea placeholder="请输入内容" id="comContext" class="layui-textarea"></textarea>
+				    </div>
+				    <span class="errorWord">投诉内容不能为空</span>
+				</div>
+			</form>
+			<div class="buttonArea">
+				<button class="layui-btn" id="lay-submit">立即提交</button>
+				<button class="layui-btn layui-btn-danger" id="cancelBtn">取消</button>
+			</div>
+		</section>
+	</div>
+<script src="js/jquery-2.1.0.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script src="js/tousu.js"></script>
+</body>
+</html>

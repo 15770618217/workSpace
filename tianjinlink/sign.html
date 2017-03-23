@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>标记</title>
+</head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
+<style>
+	.sign-wrap{
+		width: 100%;
+		height: 100%;
+		padding: 20px 35px;
+		box-sizing: border-box;
+	}
+	.sign-wrap .layui-form-item:nth-child(1){
+		margin-bottom: 0!important; 
+	}
+	/*=========================
+	备注
+	*/
+	.sign-wrap p{
+		height: 30px;
+		line-height: 30px;
+		padding-left: 50px;
+	}
+	.sign-wrap .layui-textarea{
+		float: right;
+		margin-right: 60px;
+	}
+	.sign-wrap .buttonArea{
+		text-align: right;
+		padding-right: 60px;
+	}
+	.sign-wrap .layui-btn{
+		width: 50px;
+		height: 25px;
+		line-height: 25px;
+		padding: 0;
+		border-radius: 8px;
+	}
+
+</style>
+<body>
+	<div class="sign-wrap">
+		<form class="layui-form" action="">
+			<div class="layui-form-item">
+				<label class="layui-form-label" style="width: 170px;">标记为黑名单：</label>
+				<div class="layui-input-block">
+					<input type="radio" name="sign" value="是" title="是">
+					<input type="radio" name="sign" value="否" title="否">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<p>备注</p>
+				<div class="layui-input-block">
+					<textarea name="beizhu" class="layui-textarea"></textarea>
+				</div>
+			</div>
+
+			<!-- 按钮 -->
+			<div class="buttonArea">
+				<button type="submit" class="layui-btn submitBtn" lay-submit lay-filter="signForm">提交</button>
+				<button type="reset" class="layui-btn layui-btn-danger">取消</button>
+			</div>
+		</form>
+		
+	</div>
+<script src="js/jquery-2.1.0.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+	var index = parent.layer.getFrameIndex(window.name);//获取子窗口索引
+	layui.use('form', function(){
+	  var form = layui.form();
+	  
+	  //监听提交
+	  form.on('submit(signForm)', function(data){
+	    var dataString = JSON.stringify(data.field);
+	    var dataObj = data.field;
+	    console.log(dataObj);
+	    if (dataObj.sign === '是') {
+	    	parent.layer.close(index);
+	    	parent.layer.msg('你被拉黑名单了！',{shade: 0.3});
+	    }else{
+	    	parent.layer.close(index);
+	    }
+	    return false;
+	  });
+	});
+</script>
+</body>
+</html>

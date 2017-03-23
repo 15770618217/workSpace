@@ -1,0 +1,152 @@
+/**
+ * title:"链接查询部分的css"
+ * Author:allenzjw
+ * Time:3/13
+ */
+body{
+    font-size: 16px;
+    background: #fff;
+    position:relative;
+}
+/*================================
+表单 表格整体部分
+==================================*/ 
+.link-content{
+	padding:10px 10px 0;
+	min-width:1200px;
+    overflow: auto;
+}
+/*================================
+表头部分
+ */ 
+.link-content>span{
+    display: inline-block;
+    width: 150px;
+    padding: 3px 0px 5px 12px;
+    font-size: 20px;
+    border-bottom: 2px solid rgb(63,185,191);
+}
+
+.link-content>p,.ZDYBT{
+    margin-top: 10px;
+}
+.link-content>p>span,.ZDYBT{
+    color: rgb(63,185,191);
+    cursor: pointer;
+}
+/*===============================
+查询表单部分
+*/
+.link-content .searchForm{
+    height: 160px;
+    border: 1px solid #DEDEDF;
+    margin-bottom:15px;
+    background: #fff;
+}
+.link-content .searchForm .layui-form-label{
+    margin-left: 3%;
+    padding: 9px 1%;
+}
+
+.link-content .searchFormTop,.searchFormMiddle{
+    width: 100%;
+    height: 48px;
+    padding-top: 10px;
+}
+.link-content .searchFormTop .layui-input-inline,.searchFormMiddle .layui-input-inline{
+    width: 20%;
+}
+.timeInput{
+    width: 9%!important;
+    margin: 0!important;
+}
+.layui-form-mid{
+    width: 2%!important;
+    margin: 0!important;
+    text-align: center;
+}
+/*===============================
+重置 查询按钮
+*/ 
+.link-content .searchFormBtn{
+    height: 35px;
+    line-height: 35px;
+    float: right;
+    margin-right: 45px;
+    width: 80px;
+    border-radius: 8px;
+}
+/*===============================
+投诉信息查询结果表格
+*/
+.link-content .layui-table thead tr th,
+.link-content .layui-table tbody tr td{
+	word-break:break-all;
+    text-align: center;
+    padding:10px 5px;
+}
+.link-content .layui-table tbody tr td{
+    font-size: 16px;
+    color: rgb(102,101,101);
+    font-weight: 500;
+}
+.link-content .layui-table thead tr th{
+    padding:0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 40px;
+}
+.link-content .ljTable{
+    margin: 0;
+    height: auto;
+    overflow: hidden;
+    border: 2px solid #DEDEDF;
+    border-bottom-width: 1px;
+}
+.link-content .ljTable thead tr{
+    background: none;
+}
+.link-content .ljTable thead tr th:first-child{
+	padding:0 10px;
+	min-width: 32px;
+}
+.link-content .ljTable tbody tr td{
+	font-size:14px;
+}
+/*============================
+时间input框
+*/
+.link-content .timeInput>input{
+    height: 38px!important;
+}
+/*============================
+操作
+============================== */ 
+.handelClick{
+    display: inline-block;
+    cursor: pointer;
+}
+.detailsClick{
+    color: #F1817F;
+}
+.modifyClick{
+    margin: 0 20px;
+    color: #51C1C2;
+}
+.signClick{
+    color: #51C1C2;
+}
+
+/*============================
+分页器
+ */ 
+.link-content .pager{
+    float: right;
+}
+/*============================
+处理 弹出层内容样式
+==============================*/
+body .CLYM-style .layui-layer-title{
+    color: #f8f8f8;
+    background-color: #51C1C2;
+}

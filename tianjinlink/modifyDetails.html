@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修改账户信息</title>
+</head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
+<style>
+	.modifyDetails-wrap{
+		width: 100%;
+		height: 100%;
+		padding: 20px 35px;
+		box-sizing: border-box;
+	}
+	.modifyDetails-wrap .layui-form-lable{
+		float: left;
+		width: 80px;
+		height: 38px;
+		line-height: 38px;
+		padding-right: 20px;
+		text-align: right;
+	}
+	.modifyDetails-wrap .layui-input-inline{
+		width: 260px;
+	}
+	.modifyDetails-wrap .buttonArea{
+		padding-right: 30px;
+		text-align: right;
+	}
+	.modifyDetails-wrap .buttonArea button{
+		width: 50px;
+		height: 25px;
+		line-height: 25px;
+		padding: 0; 
+		text-align: center;
+		border-radius: 8px;
+	}
+</style>
+<body>
+	<div class="modifyDetails-wrap">
+	<!-- 表单 显示内容 -->
+			<form class="layui-form" action="">
+				<div class="layui-form-item">
+					<label class="layui-form-lable">接警单编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="JJDBH" value="" class="layui-input">
+					</div>
+
+					<label class="layui-form-lable">姓名</label>
+					<div class="layui-input-inline">
+						<input type="text" name="XM" value="" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-lable">涉案网址</label>
+					<div class="layui-input-inline">
+						<input type="text" name="SAWZ" value="" class="layui-input">
+					</div>
+
+					<label class="layui-form-lable">网址名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="WZMC" value="" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-lable">链接类型</label>
+					<div class="layui-input-inline">
+						<input type="text" name="LJLX" value="" class="layui-input">
+					</div>
+
+					<label class="layui-form-lable">发生时间</label>
+					<div class="layui-input-inline">
+						<input type="text" name="FSSJ" value="" class="layui-input">
+					</div>
+				</div>
+				<!-- 按钮区 -->
+				<div class="buttonArea">
+					<button type="submit" class="layui-btn submitBtn" lay-submit lay-filter="modifyForm">提交</button>
+					<button type="reset" class="layui-btn layui-btn-danger">取消</button>
+				</div>
+			</form>
+	</div>
+
+<script src="js/jquery-2.1.0.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+	var index = parent.layer.getFrameIndex(window.name);//获取子窗口索引
+	console.log(index);
+	layui.use('form', function(){
+	  var form = layui.form();
+	  
+	  //监听提交
+	  form.on('submit(modifyForm)', function(data){
+	    var dataString = JSON.stringify(data.field);
+	    var dataObj = data.field;
+	    // console.log(dataObj.XM);
+	    console.log(parent.$('#ljTable tr').html());
+	    console.log(dataObj);
+	    return false;
+	  });
+	});
+</script>
+</body>
+</html>

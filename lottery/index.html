@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		html,body{
+			margin: 0;
+			padding: 0;
+			position: relative;
+		}
+		.container{
+			position: absolute;
+			top: 200px;
+			left: 50%;
+			margin-left: -500px; 
+			width: 1000px;
+			height: 600px;
+			background: #eee;
+		}
+		.picBox{
+			width: 100px;
+			height: 100px;
+			float: left;
+		}
+		.dailog{
+			position: absolute;
+			top: 200px;
+			left: 50%;
+			margin-left: -500px; 
+			width: 1000px;
+			height: 600px;
+			background: rgba(0,0,0,.6);
+			z-index: 100;
+		}
+		.chooseBox{
+			position: absolute;
+			top: 285px;
+			left: 50%;
+			margin-left: -150px; 
+			width: 300px;
+			height: 360px;
+			z-index: 1000;
+		}
+		.chooseBox img{
+			border-radius: 20px;
+		}
+		.chooseBox h3{
+			color: #fff;
+			text-align: center;
+		}
+		/*按钮*/
+		.lotteryBtn{
+	        position: absolute;
+	        top: 730px;
+	        left: 50%;
+	        margin-left: -400px;
+	        width: 800px;
+	        height: 32px;
+	        z-index: 10000;
+    	}
+	    .lotteryBtn .btn{
+	        position: absolute;
+	        width: 100px;
+	        height: 32px;
+	        font-size: 14px;
+	        color: #fff;
+	        border: 0;
+	        border-radius: 10px;
+	        text-align: center;
+	        outline: none;
+	        cursor: pointer;
+	    }
+	    #startBtn{
+	        left: 40%;
+	        margin-left: -50px;
+	        background-color: #35A9FF;
+	    }
+	    #startBtn:hover{
+	        background-color: #77C1F9;
+	    }
+	    #stopBtn{
+	        left: 60%;
+	        margin-left: -50px;
+	        background-color: #FF6839;
+	    }
+	    #stopBtn:hover{
+	        background-color: #F87E59;
+	    }
+	</style>
+</head>
+<body>
+	<!-- 背景墙 -->
+	<div class="container"></div>
+	<!-- 遮罩层 -->
+	<div class="dailog"></div>
+	<!-- 选择框 -->
+	<div class="chooseBox">
+		<img src="imgs/海燕.jpg">
+		<h3>海燕</h3>
+	</div>
+	<!-- 按钮 -->
+	<div class="lotteryBtn">
+        <button id="startBtn" class="btn">开始</button>
+        <button id="stopBtn" class="btn">暂停</button>
+    </div>
+    <script src="js/jquery-2.1.0.js"></script>
+    <script>
+    	var personBackground = [
+    		{pic:'imgs/侯星宇_s.jpg'},
+    		{pic:'imgs/叶丁莹_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/欧莲成_s.jpg'},
+    		{pic:'imgs/海燕_s.jpg'},
+    		{pic:'imgs/熊家财_s.jpg'},
+    		{pic:'imgs/王静_s.jpg'},
+    		{pic:'imgs/白洁_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/许公飞_s.jpg'},
+    		{pic:'imgs/钱亚萍_s.jpg'},
+    		{pic:'imgs/陆孙斌_s.jpg'},
+    		{pic:'imgs/陈明洋_s.jpg'},
+    		{pic:'imgs/苏初晨_s.jpg'},
+
+    		{pic:'imgs/侯星宇_s.jpg'},
+    		{pic:'imgs/叶丁莹_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/欧莲成_s.jpg'},
+    		{pic:'imgs/海燕_s.jpg'},
+    		{pic:'imgs/熊家财_s.jpg'},
+    		{pic:'imgs/王静_s.jpg'},
+    		{pic:'imgs/白洁_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/许公飞_s.jpg'},
+    		{pic:'imgs/钱亚萍_s.jpg'},
+    		{pic:'imgs/陆孙斌_s.jpg'},
+    		{pic:'imgs/陈明洋_s.jpg'},
+    		{pic:'imgs/苏初晨_s.jpg'},
+
+    		{pic:'imgs/侯星宇_s.jpg'},
+    		{pic:'imgs/叶丁莹_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/欧莲成_s.jpg'},
+    		{pic:'imgs/海燕_s.jpg'},
+    		{pic:'imgs/熊家财_s.jpg'},
+    		{pic:'imgs/王静_s.jpg'},
+    		{pic:'imgs/白洁_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/许公飞_s.jpg'},
+    		{pic:'imgs/钱亚萍_s.jpg'},
+    		{pic:'imgs/陆孙斌_s.jpg'},
+    		{pic:'imgs/陈明洋_s.jpg'},
+    		{pic:'imgs/苏初晨_s.jpg'},
+    		
+    		{pic:'imgs/侯星宇_s.jpg'},
+    		{pic:'imgs/叶丁莹_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/欧莲成_s.jpg'},
+    		{pic:'imgs/海燕_s.jpg'},
+    		{pic:'imgs/熊家财_s.jpg'},
+    		{pic:'imgs/王静_s.jpg'},
+    		{pic:'imgs/白洁_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/许公飞_s.jpg'},
+    		{pic:'imgs/钱亚萍_s.jpg'},
+    		{pic:'imgs/陆孙斌_s.jpg'},
+    		{pic:'imgs/陈明洋_s.jpg'},
+    		{pic:'imgs/苏初晨_s.jpg'},
+
+    		{pic:'imgs/侯星宇_s.jpg'},
+    		{pic:'imgs/叶丁莹_s.jpg'},
+    		{pic:'imgs/李焱_s.jpg'},
+    		{pic:'imgs/欧莲成_s.jpg'},
+    	];
+//    	var personData = [
+//    		{pic:'imgs/侯星宇.jpg',name:'侯星宇'},
+//    		{pic:'imgs/叶丁莹.jpg',name:'叶丁莹'},
+//    		{pic:'imgs/李焱.jpg',name:'李焱'},
+//    		{pic:'imgs/欧莲成.jpg',name:'欧莲成'},
+//    		{pic:'imgs/海燕.jpg',name:'海燕'},
+//    		{pic:'imgs/熊家财.jpg',name:'熊家财'},
+//    		{pic:'imgs/王静.jpg',name:'王静'},
+//    		{pic:'imgs/白洁.jpg',name:'白洁'},
+//    		{pic:'imgs/李焱.jpg',name:'李焱'},
+//    		{pic:'imgs/许公飞.jpg',name:'许公飞'},
+//    		{pic:'imgs/钱亚萍.jpg',name:'钱亚萍'},
+//    		{pic:'imgs/陆孙斌.jpg',name:'陆孙斌'},
+//    		{pic:'imgs/陈明洋.jpg',name:'陈明洋'},
+//    		{pic:'imgs/苏初晨.jpg',name:'苏初晨'},
+//    	];
+    	var html = '';
+    	// 页面背景填充
+    	$(function(){
+    		$.each(personBackground,function(key,data){
+    			html += '<div class="picBox"><img src="'+data.pic+'"></div>';
+    		});
+    		$('.container').html(html);
+    	});
+
+    	var i = "";
+    	var iTemp = true;
+    	var isYou = "";
+    	// 点击开始按钮开始滚动
+    	
+    	// ajax请求拿到personData数据
+    	$.ajax({
+    		type:"GET",
+    		url:"data/data.json",
+    		dataType:"json",
+    		success:function(data){
+    			console.log(data.personData.length);
+                $(window).keydown(function(event){
+                    // 遍历对象，去掉已中奖的个人信息
+                    if (isYou) {
+                        for(var j=0;j<data.personData.length;j++){
+                            console.log(data.personData.length);
+                            if(data.personData[j].name==$('.chooseBox h3').html()){
+                                data.personData.splice(j,1);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (event.keyCode == 32){
+                        if(iTemp){
+                            i = setInterval(function(){
+                                var num = Math.floor(Math.random()*data.personData.length);
+                                // 拿到的数据进行拼接
+                                html = '<img src="'+data.personData[num].pic+'"><h3>'+data.personData[num].name+'</h3>';
+                                $('.chooseBox').html(html);
+
+                            },10);
+                            iTemp = false;
+                            isYou = "";
+
+                        }else if(!iTemp){
+                            clearInterval(i);
+                            iTemp = true;
+                            isYou = true;
+                        }
+                    }
+
+                });
+    		}
+    	});
+
+    	
+
+    </script>
+</body>
+</html>
