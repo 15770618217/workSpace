@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>检索</title>
+	<link rel="stylesheet" href="lib/layui/css/layui.css">
+</head>
+<style>
+	html,body{
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	/*********************
+	公共外部框样式
+	**********************/
+	.shadow-box{
+		display: none;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(0,0,0,.3); 
+		z-index: 1;
+	}
+	.public-box{	
+		position: absolute;
+		top: 50%;	
+		left: 50%;
+		box-shadow: 1px 1px 10px rgba(0,0,0,.3);
+		background-color: #fff;
+		z-index: 1000;		
+	}
+	.public-box header{
+		width: 100%;
+		height: 40px;
+		padding: 0 20px;
+		background-color: #28A1E6;
+		box-sizing: border-box;
+	}
+	.public-box section{
+    	background: #fff;
+	}
+	.public-box header>span{
+		width: auto;
+		height: 40px;
+		line-height: 40px;
+		font-size: 16px;
+		color: #fff;
+	}
+	.public-box header>span:nth-child(1){
+		float: left;
+	}
+	.public-box header>span:nth-child(2){
+		float: right;
+		width: 30px;
+		font-size: 30px;
+	}
+	.public-box .close-box-logo{
+		cursor: pointer;
+	}
+	/*********************
+	上传文件
+	**********************/
+	.upLoad-container-box{
+		display: none;
+		margin-top: -100px;
+		margin-left: -325px;
+		width: 650px;
+		height: 200px;
+	}
+	.upLoad-container{
+		width: 100%;
+		height: 100%;
+	}
+	.type-container{
+		width: 100%;
+		height: 100px;
+		padding: 20px 30px;
+		box-sizing: border-box;
+	}
+	.type-container>span{
+		display: inline-block;
+		margin-right: 85px;
+		font-size: 1.2em;
+	}
+	.upLoad-container>p{
+		width: 100%;
+		height: 50px;
+		padding-left: 30px;
+		font-size: 14px;
+		color: red;
+		box-sizing: border-box;
+	}
+	/*********************
+	保存模板
+	**********************/
+	.save-template-box{
+		z-index: 1001;
+		display: none;
+		width: 650px;
+		height: 200px;
+		margin-top: -100px;
+		margin-left: -325px;
+	}
+	.save-template{
+		width: 100%;
+		height: 158px;
+		padding: 30px 0 0 0;
+		box-sizing: border-box;
+	}
+	.save-template .layui-form-item{
+		width: 90%;
+		margin: 0 auto;
+	}
+	.save-template .save-btn-area{
+		margin-top: 20px;
+		padding-right: 5%;
+		text-align: right;
+	}
+	/*********************
+	账单模板
+	**********************/
+	.billTemplate-container-box{
+		display: none;
+		width: 1050px;
+		height: 892px;
+		margin-top: -446px;
+		margin-left: -525px;
+	}
+	.billTemplate-container{
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+	.billTemplate-container>p{
+		width: 100%;
+		height: 50px;
+		line-height: 50px;
+		padding-left: 20px;
+		font-size: 18px;
+		box-sizing: border-box;
+	}
+	.billTemplate-container .add-template{
+		width: 100%;
+		height: 350px;
+		box-sizing: border-box;			
+	}
+	.billTemplate-container .match-result{
+		width: 100%;
+		height: 450px;
+		box-sizing: border-box;			
+	}
+	.billTemplate-container .match-result .layui-tab-card{
+		height: 380px;
+	}
+	.layui-tab-card{
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		border-bottom: 0;
+		box-sizing: border-box;
+		box-shadow: 0 0 0 0 rgba(255,255,255,0);
+	}
+	.layui-tab-card .layui-tab-content{
+		padding-left: 20px;
+	}
+	.add-template .layui-tab-item{
+		overflow: hidden;
+	}
+	.add-template .layui-tab-item>div{
+		float: left;
+		height: 280px;
+		box-sizing: border-box;
+	} 
+	.add-template .get-field{
+		width: 280px;
+	}
+	.add-template .get-field li:nth-child(1),
+	.add-template .get-field li:nth-child(9){
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
+	.active{
+		background: #A7D6F4;
+	}
+	/*================
+	过桥区
+	==================*/
+	.add-template .road-field{
+		width: 50px;
+		background: url(imgs/road.jpg) center no-repeat;
+	}
+	/*================
+	匹配模板字段
+	==================*/
+	.add-template .match-field{
+		width: 280px;
+	}
+	.field-container>p{
+		width: 100%;
+		height: 35px;
+		line-height: 35px;
+		font-size: 16px;
+	}
+	.field-container .field-box{
+		width: 277px;
+		height: 235px;
+		border-radius: 5px;
+		border: 1px solid #000;
+	}
+	.field-container .field-box li{
+		height: 16px;
+		line-height: 16px;
+		padding: 5px;
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.field-container .field-box li input{
+		vertical-align:text-bottom;
+		margin-bottom: 1px;
+	}
+	/*====================
+	上方字段按钮区
+	======================*/
+	.add-template .button-filed{
+		width: 300px;
+		padding-left: 20px;
+		padding-top: 35px;
+	}
+	.add-template .button-filed button{
+		margin-bottom: 10px;
+		border-radius: 5px;
+	}
+	.add-template .button-filed button.save-template-btn{
+		margin-top: 85px;
+		margin-bottom: 0;
+	}
+
+	/*====================
+	银行模板区域
+	======================*/
+	.match-result .layui-tab-item{
+		width: 100%;
+		height: 309px;
+	}
+	.match-result .layui-tab-item .field-area{
+		
+	}
+	
+	.match-result .field-area>div th{
+		width: 11%;
+	}
+	.match-result .layui-tab-content{
+		overflow: auto;
+	}
+	.match-result .result-btn-area{
+		width: 100%;
+		height: 70px;
+		padding: 0 10px 0 30px;
+		text-align: right;
+		box-sizing: border-box; 
+	}
+	.match-result .result-btn-area p{
+		text-align: left;
+		color: red;
+	}
+	/************************
+	上传数据
+	*************************/
+	.upLoadData-container-box{
+		display: none;
+		width: 650px;
+		height: 250px;
+		margin-top: -125px;
+		margin-left: -325px;
+	}
+	.upLoadData-container-box .upLoadData-type-container>span{
+		display: inline-block;
+		padding: 10px 30px;
+		font-size: 18px;
+
+	}
+	.upLoadData-container .layui-form-item{
+		width: 90%;
+	}
+	.upLoadData-container .layui-input-block{
+		width: 60%;
+		margin-left: 160px;
+	}
+	.upLoadData-container .layui-form-label{
+		text-align: left;
+		width: 130px;
+	}
+	.upLoadData-container .upLoadData-btn-area{
+		text-align: right;
+		padding-right: 10px;
+	}
+	/************************
+	校验规则
+	*************************/
+	.check-container-box{
+		display: none;
+		width: 650px;
+		height: 250px;
+		margin-top: -125px;
+		margin-left: -325px;
+	}
+	.check-container-box .check-type-container>span{
+		display: inline-block;
+		padding: 10px 30px;
+		font-size: 18px;
+	}
+	.check-container-box .check-type-container .layui-input-block{
+		min-height: 70px;
+	    line-height: 70px;
+	    margin-left: 85px;
+	}
+    .check-container-box .check-btn-area{
+		text-align: right;
+		padding-right: 30px;
+	}
+	.show-box{
+		display: block;
+	}
+	.hide-box{
+		display: none;
+	}
+</style>
+<body>
+	<div id="shadow-box" class="shadow-box"></div>
+	<!-- 上传文件 -->
+	<div id="upLoad-container-box" class="public-box upLoad-container-box">
+		<header>
+			<span>上传文件</span>
+			<span class="close-box-logo">×</span>
+		</header>
+		<section>
+			<div class="upLoad-container">
+				<div class="type-container">
+					<span>请选择你需要上传的文件类型！</span>
+					<button id="data-file" class="layui-btn layui-btn-normal">数据文件</button>&nbsp;&nbsp;
+					<button id="pic-file" class="layui-btn layui-btn-normal">图片文件</button>
+				</div>
+				<p>*本系统支持具体数据文件与文件夹导入双重模式！</p>
+			</div>
+		</section>
+	</div>
+	<!-- 保存模板 -->
+	<div id="save-template-box" class="public-box save-template-box">
+		<header>
+			<span>保存模板</span>
+			<span class="close-box-logo">×</span>
+		</header>
+		<section>
+			<div class="save-template">
+				<div class="layui-form-item">
+				      <input id="save-template-input" type="text" name="" required  lay-verify="required" placeholder="请输入模板名称" autocomplete="off" class="layui-input"/>
+				</div>
+				<div class="save-btn-area">
+					<button class="layui-btn layui-btn-normal close-box-btn" name="save-template-box">关闭</button>
+					<button id="save-template-submit" class="layui-btn layui-btn-normal">提交</button>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- 账单模板 -->
+	<div id="billTemplate-container-box" class="public-box billTemplate-container-box">
+		<header>
+			<span>账单模板</span>
+			<span class="close-box-logo">×</span>
+		</header>
+		<section>
+			<div class="billTemplate-container">
+				<p>数据抽取结果</p>
+				<div class="add-template">
+					<!-- 选项卡 -->
+					<div class="layui-tab layui-tab-card">
+					  <ul class="layui-tab-title">
+					    <li class="layui-this">基本字段1</li>
+					    <li>扩充字段2</li>
+					  </ul>
+					  <div class="layui-tab-content">
+					  	<!-- 基本字段 -->
+					    <div class="layui-tab-item layui-show">
+					    	<div id="get-field" class="get-field field-container">
+					    		<p>源数据文件抽取字段:</p>
+					    		<div class="field-box">
+					    			<ul>
+					    				<li>交易账号A</li>
+					    				<li>交易金额</li>
+					    				<li>对手账号B</li>
+					    			</ul>
+					    		</div>
+					    	</div>
+					    	<div class="road-field"></div>
+					    	<div id="match-field" class="match-field field-container">
+					    		<p>匹配模板字段:</p>
+					    		<div class="field-box">
+					    			<ul>
+					    				<li><input type="radio" name="field"> 1</li>
+					    				<li><input type="radio" name="field"> 2</li>
+					    				<li><input type="radio" name="field"> 3</li>
+					    				<li><input type="radio" name="field"> 4</li>
+					    				<li><input type="radio" name="field"> 5</li>
+					    				<li><input type="radio" name="field"> 6</li>
+					    				<li><input type="radio" name="field"> 7</li>
+					    				<li><input type="radio" name="field"> 8</li>
+					    				<li><input type="radio" name="field"> 9</li>
+					    			</ul>
+					    		</div>
+					    	</div>
+					    	<div class="button-filed">
+					    		<p><button class="layui-btn layui-btn-small layui-btn-normal add-btn">添加</button></p>
+					    		<p><button class="layui-btn layui-btn-small layui-btn-normal remove-btn">移除</button></p>
+					    		<p><button class="layui-btn layui-btn-small layui-btn-normal removeAll-btn">移除全部</button></p>
+					    		<p><button class="layui-btn layui-btn-small layui-btn-normal save-template-btn">保存模板</button></p>
+					    	</div>
+					    </div>
+					    <div class="layui-tab-item">2</div>
+					  </div>
+					</div>
+				</div>
+
+				<div class="match-result">
+					<!-- 选项卡 -->
+					<div class="layui-tab layui-tab-card">
+					  <ul class="layui-tab-title">
+					    <li class="layui-this">标准模板</li>
+					    <li>中国银行516</li>
+					    <li>工行银行</li>
+					    <li>农业银行</li>
+					    <li>建设银行</li>
+					    <li>交通银行</li>
+					  </ul>
+					  <div class="layui-tab-content">
+					    <div class="layui-tab-item layui-show">
+					    	<div class="field-area">
+					    		<div class="base-field">
+					    			<p>匹配结果-基本字段1</p>
+					    			<table class="layui-table">
+					    				<thead>
+					    					<th>1</th>
+					    					<th>2</th>
+					    					<th>3</th>
+					    					<th>4</th>
+					    					<th>5</th>
+					    					<th>6</th>
+					    					<th>7</th>
+					    					<th>8</th>
+					    					<th>9</th>
+					    				</thead>
+					    				<tbody>
+					    					<tr>
+					    						<td>交易账号A</td>
+					    						<td>交易类型</td>
+					    						<td>交易金额</td>
+					    						<td>交易方向</td>
+					    						<td>账户余额</td>
+					    						<td>交易时间</td>
+					    						<td>结算编码</td>
+					    						<td>对手账号B</td>
+					    						<td>账户名称</td>
+					    					</tr>
+					    					<tr>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    					</tr>
+					    				</tbody>
+					    			</table>
+					    		</div>
+						    	<div class="extend-field">
+						    		<p>匹配结果-扩充字段2</p>
+						    		<table class="layui-table">
+					    				<thead>
+					    					<th>1</th>
+					    					<th>2</th>
+					    					<th>3</th>
+					    					<th>4</th>
+					    					<th>5</th>
+					    					<th>6</th>
+					    					<th>7</th>
+					    					<th>8</th>
+					    					<th>9</th>
+					    				</thead>
+					    				<tbody>
+					    					<tr>
+					    						<td>交易终端编号</td>
+					    						<td>终端所属机构/个人编号</td>
+					    						<td>终端所属机构/个人名称</td>
+					    						<td>交易IP</td>
+					    						<td>交易地理位置编码</td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    					</tr>
+					    					<tr>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    						<td></td>
+					    					</tr>
+					    				</tbody>
+					    			</table>
+						    	</div>
+					    	</div> 	
+					    </div>
+					    <div class="layui-tab-item">中国银行</div>
+					    <div class="layui-tab-item">工商银行</div>
+					    <div class="layui-tab-item">农业银行</div>
+					    <div class="layui-tab-item">建设银行</div>
+					    <div class="layui-tab-item">交通银行</div>
+					  </div>
+					</div>
+						<!-- 提示 提交区域 -->
+					<div class="result-btn-area">
+						<p>第一行是系统数据库表中字段名称，第二行是抽取源数据文件的表字段名称</p>
+						<button id="upLoadData-btn" class="layui-btn layui-btn-small layui-btn-normal">上传数据</button>
+						<button id="deleteTemplate-btn" class="layui-btn layui-btn-small layui-btn-normal">删除模板</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- 上传数据 -->
+	<div id="upLoadData-container-box" class="public-box upLoadData-container-box">
+		<header>
+			<span>上传数据</span>
+			<span class="close-box-logo">×</span>
+		</header>
+		<section>
+			<div class="upLoadData-container">
+				<div class="upLoadData-type-container">
+					<span>"中国银行账单" 为 .csv类型,请将数据转换 ".xslx"类型：</span>
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">原数据文件类型为：</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					    </div>
+						<br/>
+					    <label class="layui-form-label">原数据文件转换为：</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					    </div>
+					  </div>
+					<div class="upLoadData-btn-area">
+						<button class="layui-btn layui-btn-normal close-box-btn" name="upLoadData-container-box">关闭</button>
+						<button id="upLoadData-submit" class="layui-btn layui-btn-normal">提交</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- 校验规则 -->
+	<div id="check-container-box" class="public-box check-container-box">
+		<header>
+			<span>校验方式</span>
+			<span class="close-box-logo">×</span>
+		</header>
+		<section>
+			<div class="check-container">
+				<div class="check-type-container">
+					<span>如有需要，请选择数据校验方式：</span>
+					<form class="layui-form" action="">
+						<div class="layui-form-item">
+						    <div class="layui-input-block">
+						      <input type="radio" name="check" value="" title="计数方式校验"/>
+						      <input type="radio" name="check" value="" title="文件表头信息识别"/>
+						      <input type="radio" name="check" value="" title="首行是否为校验"/>
+						    </div>
+						</div>
+					</form>	
+					<div class="check-btn-area">
+						<button class="layui-btn layui-btn-normal close-box-btn" name="check-container-box">关闭</button>
+						<button id="submit-btn" class="layui-btn layui-btn-normal">提交</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<button class="layui-btn" onclick="caseSearchObj(this)">上传文件</button>
+	<script src="js/jquery-2.1.0.js"></script>
+	<script src="lib/layui/lay/dest/layui.all.js"></script>
+	<script>
+		/*function upLoadBill(a) {
+			layer.open({
+				title: "上传文件",
+	    		type: 2,
+	    		skin: 'layui-layer-lan',
+	    		area: ["650px", "200px"],
+	    		content: "./billContent.html"
+			});
+			layer.open({
+				title: "账单模板",
+	    		type: 2,
+	    		skin: 'layui-layer-lan',
+	    		area: ["1050px", "892px"],
+	    		content: "./zdmb.html"
+			});
+			layer.open({
+				title: "保存模板",
+	    		type: 2,
+	    		skin: 'layui-layer-lan',
+	    		area: ["650px", "200px"],
+	    		content: "./save.html"
+			});
+		}*/
+		var caseSearch = {
+			init: function() {
+				this.upLoadFileEvent();
+				this.closeEvent();
+			},
+			upLoadFileEvent: function() {
+				//显示弹出框
+				$('#upLoad-container-box').removeClass('hide-box').addClass('show-box');
+				$('#shadow-box').removeClass('hide-box').addClass('show-box');
+
+				//点击数据文件
+				$('#data-file').click(function(event) {
+					//ajax将数据保存到数据库
+
+					// 关闭
+					$('#upLoad-container-box').removeClass('show-box').addClass('hide-box');
+					// 调用账单模板函数
+					caseSearch.billTemplateEvent()
+				});
+				//点击图片文件
+				$('#pic-file').click(function(event) {
+					//ajax将图片保存到数据库
+
+					// 关闭
+					$('#upLoad-container-box').removeClass('show-box').addClass('hide-box');
+					// 调用账单模板函数
+					caseSearch.billTemplateEvent();
+				});
+			},
+			billTemplateEvent: function() {
+				$('#billTemplate-container-box').removeClass('hide-box').addClass('show-box');
+
+				//选择字段
+				$('#get-field').on('click','.field-box>ul>li',function(){
+					$(this).addClass('active').siblings('li').removeClass('active');
+				});
+				//保存模板按钮
+				$('.save-template-btn').click(function(event) {
+					//拿到抽取字段和匹配字段 
+					//调用保存模板函数
+
+					caseSearch.saveTemplateEvent();
+				});
+				//上传数据
+				$('#upLoadData-btn').click(function(event) {
+					// 判断数据是否符合格式
+					var fileType = true
+					if(fileType){//转格式框
+						caseSearch.upLoadDataEvent();
+					}else{
+						caseSearch.checkTypeEvent();
+					}
+					// ajax上传数据
+				});
+			},
+			saveTemplateEvent: function() {
+				$('#save-template-box').removeClass('hide-box').addClass('show-box');
+				//提交
+				$('#save-template-submit').on('click',function(event) {
+					//ajax将模板名字提交
+					//名字同时在账单模板中显示
+					var templateName = $('#save-template-input').val();
+					if(templateName == ''){
+						return false;
+					}else{
+						$('#billTemplate-container-box .match-result>div>ul.layui-tab-title')
+																	.children()
+																	.filter('.layui-this')
+																	.removeClass('layui-this')
+																	.parent()
+																	.append('<li class="layui-this">'+templateName+'</li>');
+
+						$('#billTemplate-container-box .match-result>div>div.layui-tab-content')
+																	.children()
+																    .filter('.layui-show')
+																    .removeClass('layui-show')
+																    .parent()
+																    .append('<div class="layui-tab-item layui-show">'+templateName+'</div>');
+						$('#save-template-input').val('');
+						$('#save-template-box').removeClass('show-box').addClass('hide-box');
+					}	
+				});
+			},
+			upLoadDataEvent: function() {
+				$('#upLoadData-container-box').removeClass('hide-box').addClass('show-box');
+				// 提交
+				$('#upLoadData-submit').click(function() {
+					$('#upLoadData-container-box').removeClass('show-box').addClass('hide-box');
+					//校验方式弹窗
+					caseSearch.checkTypeEvent();
+				});
+			},
+			checkTypeEvent: function() {
+				$('#check-container-box').removeClass('hide-box').addClass('show-box');
+				// 提交
+				$('#submit-btn').click(function() {
+					// ajax
+					$('#check-container-box').removeClass('show-box').addClass('hide-box');
+				});
+			},
+			closeEvent: function() {
+				// x
+				$('.close-box-logo').click(function(event) {
+					$(this).parent().parent().removeClass('show-box').addClass('hide-box');
+					$('#shadow-box').removeClass('show-box').addClass('hide-box');
+				});
+				// 关闭按钮
+				$('.close-box-btn').click(function(event) {
+					var getId = $(this).attr('name');
+					$('#'+getId).removeClass('show-box').addClass('hide-box').find('input').val('');
+				});
+			}
+		}
+		function caseSearchObj(){
+			caseSearch.init();
+		}
+
+	</script>
+</body>
+</html>
