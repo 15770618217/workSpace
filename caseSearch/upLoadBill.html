@@ -349,6 +349,7 @@
 	}
 </style>
 <body>
+<!-- 上传账单 -->
 	<div id="shadow-box" class="shadow-box"></div>
 	<!-- 上传文件 -->
 	<div id="upLoad-container-box" class="public-box upLoad-container-box">
@@ -361,10 +362,10 @@
 				<div class="type-container">
 					<span>请选择你需要上传的文件类型！</span>
 					<button class="layui-btn layui-btn-normal">数据文件</button>
-					<input id="data-file" class="data-file upFile-input" type="file">
+					<input id="data-file" class="data-file upFile-input" type="file"/>
 					&nbsp;&nbsp;
 					<button class="layui-btn layui-btn-normal">图片文件</button>
-					<input id="pic-file" class="pic-file upFile-input" type="file">
+					<input id="pic-file" class="pic-file upFile-input" type="file" multiple="multiple"/>
 				</div>
 				<p>*本系统支持具体数据文件与文件夹导入双重模式！</p>
 			</div>
@@ -379,7 +380,7 @@
 		<section>
 			<div class="save-template">
 				<div class="layui-form-item">
-				      <input id="save-template-input" type="text" name="" required  lay-verify="required" placeholder="请输入模板名称" autocomplete="off" class="layui-input"/>
+				      <input id="save-template-input" type="text" lay-verify="required" placeholder="请输入模板名称" autocomplete="off" class="layui-input"/>
 				</div>
 				<div class="save-btn-area">
 					<button class="layui-btn layui-btn-normal close-box-btn" name="save-template-box">关闭</button>
@@ -410,11 +411,7 @@
 					    	<div id="get-field" class="get-field field-container">
 					    		<p>源数据文件抽取字段:</p>
 					    		<div class="field-box">
-					    			<ul>
-					    				<li>交易账号A</li>
-					    				<li>交易金额</li>
-					    				<li>对手账号B</li>
-					    			</ul>
+					    			<ul></ul>
 					    		</div>
 					    	</div>
 					    	<div class="road-field"></div>
@@ -422,23 +419,23 @@
 					    		<p>匹配模板字段:</p>
 					    		<div class="field-box">
 					    			<ul>
-					    				<li><input type="radio" name="field"> 1</li>
-					    				<li><input type="radio" name="field"> 2</li>
-					    				<li><input type="radio" name="field"> 3</li>
-					    				<li><input type="radio" name="field"> 4</li>
-					    				<li><input type="radio" name="field"> 5</li>
-					    				<li><input type="radio" name="field"> 6</li>
-					    				<li><input type="radio" name="field"> 7</li>
-					    				<li><input type="radio" name="field"> 8</li>
-					    				<li><input type="radio" name="field"> 9</li>
+					    				<li><input type="radio" name="field" value="1" checked="checked"/> 1</li>
+					    				<li><input type="radio" name="field" value="2"/> 2</li>
+					    				<li><input type="radio" name="field" value="3"/> 3</li>
+					    				<li><input type="radio" name="field" value="4"/> 4</li>
+					    				<li><input type="radio" name="field" value="5"/> 5</li>
+					    				<li><input type="radio" name="field" value="6"/> 6</li>
+					    				<li><input type="radio" name="field" value="7"/> 7</li>
+					    				<li><input type="radio" name="field" value="8"/> 8</li>
+					    				<li><input type="radio" name="field" value="9"/> 9</li>
 					    			</ul>
 					    		</div>
 					    	</div>
 					    	<div class="button-filed">
-					    		<p><button class="layui-btn layui-btn-small layui-btn-normal add-btn">添加</button></p>
-					    		<p><button class="layui-btn layui-btn-small layui-btn-normal remove-btn">移除</button></p>
-					    		<p><button class="layui-btn layui-btn-small layui-btn-normal removeAll-btn">移除全部</button></p>
-					    		<p><button class="layui-btn layui-btn-small layui-btn-normal save-template-btn">保存模板</button></p>
+					    		<p><button id="template-add-btn" class="layui-btn layui-btn-small layui-btn-normal">添加</button></p>
+					    		<p><button id="template-remove-btn" class="layui-btn layui-btn-small layui-btn-normal">移除</button></p>
+					    		<p><button id="template-removeAll-btn" class="layui-btn layui-btn-small layui-btn-normal">移除全部</button></p>
+					    		<p><button id="save-template-btn" class="layui-btn layui-btn-small layui-btn-normal">保存模板</button></p>
 					    	</div>
 					    </div>
 					    <div class="layui-tab-item">2</div>
@@ -572,12 +569,12 @@
 					  <div class="layui-form-item">
 					    <label class="layui-form-label">原数据文件类型为：</label>
 					    <div class="layui-input-block">
-					      <input type="text" name="" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					      <input type="text" lay-verify="required" autocomplete="off" class="layui-input"/>
 					    </div>
 						<br/>
 					    <label class="layui-form-label">原数据文件转换为：</label>
 					    <div class="layui-input-block">
-					      <input type="text" name="" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					      <input type="text" lay-verify="required" autocomplete="off" class="layui-input"/>
 					    </div>
 					  </div>
 					<div class="upLoadData-btn-area">
@@ -601,9 +598,9 @@
 					<form class="layui-form" action="">
 						<div class="layui-form-item">
 						    <div class="layui-input-block">
-						      <input type="radio" name="check" value="" title="计数方式校验"/>
-						      <input type="radio" name="check" value="" title="文件表头信息识别"/>
-						      <input type="radio" name="check" value="" title="首行是否为校验"/>
+						      <input type="checkbox" name="check-account" value="" title="计数方式校验"/>
+						      <input type="checkbox" name="check-header" value="" title="文件表头信息识别"/>
+						      <input type="checkbox" name="check-headline" value="" title="首行是否为空校"/>
 						    </div>
 						</div>
 					</form>	
@@ -619,30 +616,10 @@
 	<script src="js/jquery-2.1.0.js"></script>
 	<script src="lib/layui/lay/dest/layui.all.js"></script>
 	<script>
-		/*function upLoadBill(a) {
-			layer.open({
-				title: "上传文件",
-	    		type: 2,
-	    		skin: 'layui-layer-lan',
-	    		area: ["650px", "200px"],
-	    		content: "./billContent.html"
-			});
-			layer.open({
-				title: "账单模板",
-	    		type: 2,
-	    		skin: 'layui-layer-lan',
-	    		area: ["1050px", "892px"],
-	    		content: "./zdmb.html"
-			});
-			layer.open({
-				title: "保存模板",
-	    		type: 2,
-	    		skin: 'layui-layer-lan',
-	    		area: ["650px", "200px"],
-	    		content: "./save.html"
-			});
-		}*/
-		var caseSearch = {
+		 /**
+    *上传账单
+    */
+    var caseSearch = {
 			init: function() {
 				this.upLoadFileEvent();
 				this.closeEvent();
@@ -653,95 +630,147 @@
 				$('#shadow-box').removeClass('hide-box').addClass('show-box');
 
 				//点击数据文件
-				$('#data-file').click(function(event) {
+				$('#data-file').unbind('change');
+				$('#data-file').bind('change',function(event) {
+					var _this = $(this)
 					//调用文件上传方法
-					caseSearch.upLoadFile();
+					caseSearch.upLoadFile(_this)
 					// 关闭
 					$('#upLoad-container-box').removeClass('show-box').addClass('hide-box');
-					// 调用账单模板函数
-					caseSearch.billTemplateEvent();
+					$('#shadow-box').removeClass('show-box').addClass('hide-box');
 				});
-				//图片文件
-				$('#pic-file').on('change',function(a) {
-					//调用图片上传方法
-					_this = $(this);
-					var base64 = caseSearch.upLoadPic(_this);
+				//点击图片文件
+				$('#pic-file').unbind('change');
+				$('#pic-file').bind('change',function(event) {
 
+					var _this = $(this);
+					//调用图片上传方法
+					caseSearch.upLoadPic(_this)
 					// 关闭
 					$('#upLoad-container-box').removeClass('show-box').addClass('hide-box');
-					// 调用账单模板函数
-					caseSearch.billTemplateEvent();
+					$('#shadow-box').removeClass('show-box').addClass('hide-box');
 				});
 			},
 			upLoadPic: function(_this) {
+				var dataurl;
 				// 获取图片资源
 				var file = _this[0].files[0];
+				var fileName = _this[0].files[0].name;
 				if (!file.type.match('image.*')) {
 					return false;
 				}else {
 					var reader = new FileReader();
 					reader.readAsDataURL(file);//读取文件
 					reader.onload = function(arg) {
-						return arg.target.result;
-						//ajax图片上传
+						dataurl = arg.target.result;
+						//ajax进行图片上传数据库
 						$.ajax({
-
+							type:"POST",
+							url:"/seral/uploadImage",
+							data: {"Base64":dataurl,"picName":fileName},
+							success:function(data) {
+								console.log(data)
+							}
 						});
 					}
-				}
+				}	
 			},
-			upLoadFile: function() {
-				layui.use(['layer','form','upload'], function(){
-					var layer = layui.layer,
-					  	form = layui.form(),
-					  	upload = layui.upload;
-
-					upload({
-						elem: '#data-file',
-						url:'',
-						method: 'post',
-						unwrap: true,
-						before: function(input) {
-							console.log(inupt)
-						},
-						success: function(res) {
-							console.log('上传完毕')
-						}
-					})
-				})
+			upLoadFile: function(_this) {
+				// 获取文件资源
+				var file = _this[0].files[0];
+				var fileName = _this[0].files[0].name
+				var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1);
+				caseSearch.checkTypeEvent(file,fileExt);
 			},
-			billTemplateEvent: function() {
+			billTemplateEvent: function(data) {
+				console.log(data)
 				$('#billTemplate-container-box').removeClass('hide-box').addClass('show-box');
-
-				//选择字段
+				
+				//源数据文件抽取字段渲染
+				var html = '';
+				for(var i=0; i<data.dataHeader.length; i++){
+					html += '<li>'+data.dataHeader[i]+'</li>'
+				}
+				console.log($('#get-field>.field-box>ul'))
+				$('#get-field>.field-box>ul').html(html);
+				
+				//选择源数据文件抽取字段效果交互				
 				$('#get-field').on('click','.field-box>ul>li',function(){
-					$(this).addClass('active').siblings('li').removeClass('active');
+					$(this).addClass('field-active').siblings('li').removeClass('field-active');
 				});
+				$('#match-field').on('click','.field-box>ul>li',function(){
+					$(this).addClass('field-active').siblings('li').removeClass('field-active');
+				});
+				
+				//添加按钮		
+				$('#template-add-btn').unbind('click');
+				$('#template-add-btn').bind('click',function() {
+					var getFieldVal = $('#get-field .field-active').text();
+					var	matchFieldVal = $("input[name='field']:checked").val();
+					var isSame = 0;//默认没有相同的字段
+					
+					var _thisLi = $('#match-field .field-box>ul>li:nth-child('+matchFieldVal+')');
+					if($('.newField').length == 0){//第一次添加
+						_thisLi.append('<span class="newField">&nbsp;&nbsp;'+getFieldVal+'</span>');
+					}else {//不是第一次添加
+						for(var i=0; i<$('.newField').length; i++){
+							console.log($($('.newField')[i]).text().trim())
+							if($($('.newField')[i]).text().trim() == getFieldVal){
+								isSame += 1;
+							}else{
+								isSame += 0;								
+							}
+						}
+						//判断是否添加过
+						if(_thisLi.children().length < 2 && getFieldVal != '' && isSame == 0){
+							_thisLi.append('<span class="newField">&nbsp;&nbsp;'+getFieldVal+'</span>');
+						}else {
+							isSame = 0;
+							return false;
+						}
+					}
+				});
+				
+				//移除按钮
+				$('#template-remove-btn').bind('click',function() {
+					var deleteObj = $('#match-field .field-active')
+					console.log(deleteObj)
+					if(deleteObj.length == 0){
+						return false;
+					}else{
+						if(deleteObj.children('span').length == 0){
+							return false;
+						}else{
+							deleteObj.children('span').remove();
+						}
+					}
+				});
+				
+				//移除全部按钮
+				$('#template-removeAll-btn').bind('click',function() {
+					$('.newField').remove();
+				});
+				
 				//保存模板按钮
 				$('.save-template-btn').click(function(event) {
 					//拿到抽取字段和匹配字段 
 					//调用保存模板函数
-
 					caseSearch.saveTemplateEvent();
 				});
+				
 				//上传数据
 				$('#upLoadData-btn').click(function(event) {
-					// 判断数据是否符合格式
-					var fileType = true
-					if(fileType){//转格式框
-						caseSearch.upLoadDataEvent();
-					}else{
-						caseSearch.checkTypeEvent();
-					}
 					// ajax上传数据
 				});
 			},
-
 			saveTemplateEvent: function() {
 				$('#save-template-box').removeClass('hide-box').addClass('show-box');
 				//提交
 				$('#save-template-submit').on('click',function(event) {
 					//ajax将模板名字提交
+					$.ajax({
+						
+					});
 					//名字同时在账单模板中显示
 					var templateName = $('#save-template-input').val();
 					if(templateName == ''){
@@ -771,15 +800,95 @@
 				$('#upLoadData-submit').click(function() {
 					$('#upLoadData-container-box').removeClass('show-box').addClass('hide-box');
 					//校验方式弹窗
-					caseSearch.checkTypeEvent();
+					
 				});
 			},
-			checkTypeEvent: function() {
+			checkTypeEvent: function(file,fileExt) {
 				$('#check-container-box').removeClass('hide-box').addClass('show-box');
 				// 提交
 				$('#submit-btn').click(function() {
+					// 拿到对应复选框选择状态
+					var checkObj = $('#check-container-box .check-type-container .layui-form-checked');
+					var checkedNum = 0;
+					for(var i=0; i<checkObj.length; i++){
+						var stringText = $(checkObj[i]).text();
+						var checkedText = stringText.substring(0,stringText.length-1)
+						if(checkedText == '计数方式校验'){
+							checkedNum += 1;
+						}else if(checkedText == '文件表头信息识别'){
+							checkedNum += 2;
+						}else if(checkedText == '首行是否为空校'){
+							checkedNum += 4;
+						}
+					}
+					console.log(checkedNum)
 					// ajax
+					console.log(file)
+					console.log(fileExt)
+					/* $.ajax({
+						type: "POST",
+						url: "/seral/verifyMethod",
+						processData: false,
+						data:{"file":file.size,"fileExt":fileExt,"verifySum":checkedNum},
+						success:function(data){
+							console.log(data)
+						}
+					});  */
+					//fromdata_ajax
+					var formData = new FormData();
+					formData.append('file',$('#data-file')[0].files[0]);
+					formData.append('fileExt',fileExt);
+					formData.append('verifySum',checkedNum);
+					console.log(formData)
+					$.ajax({
+						type: "POST",
+						url: "/seral/verifyFileUpload",
+						processData: false,
+						contentType: false,
+						dataType: 'json',
+					    cache: false,
+						data: formData,
+						success:function(data) {
+							//console.log(data)
+							if(data.countStatu == 'pass' || data.countStatu == 'success'){
+								//弹出账单模板
+								if(data.message == true){
+									//有模板
+									$('.add-template').removeClass('show-box').addClass('hide-box');
+									$('#shadow-box').removeClass('hide-box').addClass('show-box');
+									caseSearch.billTemplateEvent(data);
+								}else{
+									//没有模板
+									$('.add-template').removeClass('hide-box').addClass('show-box');
+									$('#shadow-box').removeClass('hide-box').addClass('show-box');
+									caseSearch.billTemplateEvent(data);
+								}
+							}
+						},
+						error:function(data) {
+							console.log('err')
+						}
+					}); 
+					/* layui.use(['layer','form','upload'], function(){
+						var layer = layui.layer,
+						  	form = layui.form(),
+						  	upload = layui.upload;
+						console.log('1')
+						upload({
+							elem: '#data-file',
+							url:'/seral/verifyMethod?fileExt='+fileExt+'verifySum='+checkedNum,
+							method: 'get',
+							ext: 'zip|rar',
+							before:function(){
+								console.log('开始时')
+							},
+							success: function(res) {
+								console.log('上传完毕')
+							}
+						})
+					}) */
 					$('#check-container-box').removeClass('show-box').addClass('hide-box');
+					$('#shadow-box').removeClass('show-box').addClass('hide-box');
 				});
 			},
 			closeEvent: function() {
