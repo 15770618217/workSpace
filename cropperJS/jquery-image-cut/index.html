@@ -339,15 +339,16 @@
 
     // 点击按钮从数据库获取图片
     var i = 0;
-    var html = '';
+    var cropHtml = '';
     $('#pullCropData').click(function(){
       $.ajax({
         url:"data/cropData.json",
         success: function(data){
-          var pullData = '{"left":'+data[i].left+',"top":'+data[i].top+',"width":'+data[i].width+',"height":'+data[i].height+'}';
+          console.log(data);
+          var pullData = '{"left":'+data[0].left+',"top":'+data[0].top+',"width":'+data[0].width+',"height":'+data[0].height+'}';
           $('#putData').val(pullData);
           
-          cropHtml = 
+          cropHtml =
               '<div class="cropper-crop-box" style="width:'+data[i].width+'px;height:'+data[i].height+'px;left:'+data[i].left+'px;top:'+data[i].top+'px;">'+
                 '<span class="cropper-view-box"></span>'+
                 '<span class="cropper-dashed dashed-h"></span>'+
@@ -366,10 +367,11 @@
                 '<span class="cropper-point point-sw" data-drag="sw"></span>'+
                 '<span class="cropper-point point-se" data-drag="se"></span>'+
               '</div>';
+          $('.cropper-container').append(cropHtml);
         }
       });
-      $('.cropper-container').append(cropHtml);
-      i++;
+
+//      i++;
     });
 
     // 点击上传图片按钮 显示插件的功能模块

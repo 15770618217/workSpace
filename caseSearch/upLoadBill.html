@@ -642,7 +642,7 @@
 				//点击图片文件
 				$('#pic-file').unbind('change');
 				$('#pic-file').bind('change',function(event) {
-
+					caseSearch.billTemplateEvent();
 					var _this = $(this);
 					//调用图片上传方法
 					caseSearch.upLoadPic(_this)
@@ -683,23 +683,33 @@
 				caseSearch.checkTypeEvent(file,fileExt);
 			},
 			billTemplateEvent: function(data) {
-				console.log(data)
 				$('#billTemplate-container-box').removeClass('hide-box').addClass('show-box');
-				
+				$('#shadow-box').removeClass('hide-box').addClass('show-box');
 				//源数据文件抽取字段渲染
-				var html = '';
+				var htmlGet = '';
 				for(var i=0; i<data.dataHeader.length; i++){
-					html += '<li>'+data.dataHeader[i]+'</li>'
+					htmlGet += '<li>'+data.dataHeader[i]+'</li>'
 				}
-				console.log($('#get-field>.field-box>ul'))
-				$('#get-field>.field-box>ul').html(html);
+				$('#get-field>.field-box>ul').html(htmlGet);
+				//匹配模板字段渲染
+				var baseTemplate = ['账号','交易金额','对方账号','借贷标志','时间','Ip','Mac','转出银行','转入银行','转出人','转入人','客户编号','登录客户名','币种','物理网点号','交易机构号','交易机构名'];
 				
-				//选择源数据文件抽取字段效果交互				
+				var htmlMatch = '';
+				for(var i=0; i<baseTemplate.length; i++){
+					htmlMatch += '<li><input type="radio" name="field" value="'+(i+1)+'"/>'+ baseTemplate[i]+'</li>'
+				}
+				$('#match-field>.field-box>ul').html(htmlMatch);
+				$('#match-field>.field-box>ul>li:nth-child(1)>input').attr('checked','checked');
+				
+				//选择源数据文件抽取字段效果交互 背景颜色的改变				
 				$('#get-field').on('click','.field-box>ul>li',function(){
 					$(this).addClass('field-active').siblings('li').removeClass('field-active');
 				});
 				$('#match-field').on('click','.field-box>ul>li',function(){
+					alert('1')
 					$(this).addClass('field-active').siblings('li').removeClass('field-active');
+					//点击li使radio的input框成选中状态
+					console.log($(this).chlidren('input'));
 				});
 				
 				//添加按钮		

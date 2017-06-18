@@ -3,6 +3,23 @@
  * Author:allenzjw
  * Time:3/13
  */
+//第一次加载时 默认是全部的表头
+var html = '';
+$(function(){
+   html = ' <thead>'+
+              '<tr>'+
+   	            '<th width="6%">序号</th>'+
+				'<th width="12%">案件编号</th>'+
+				'<th width="10%">姓名</th>'+
+				'<th width="24%">涉案网址</th>'+
+				'<th width="16%">网站名称</th>'+
+				'<th width="12%">链接类型</th>'+
+				'<th width="10%">发生时间</th>'+
+				'<th width="20%">操作</th>'+
+	          '</tr>'+
+	       '</thead>';
+	$('#ljTable').prepend(html);
+});
 // 点击查询按钮 发起ajax请求向后台请求数据 并显示
 // 如果查询内容不存在 则显示空
 $('#searchBtn').click(function(){
