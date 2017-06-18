@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>写一个字</title>
+	<style>
+		#canvas {
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+<canvas id="canvas">
+	您的浏览器不支持canvas!
+</canvas>
+<script src="lib/jquery.min.js"></script>
+<script>
+	// canvas初始大小
+	var canvasWidth = 600;
+	var canvasHeight = canvasWidth;
+	var isMouseDown = false;
+
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
+	// 鼠标事件
+	// 按下鼠标事件
+	canvas.onmousedown = function(e) {
+		e.preventDefault();
+		isMouseDown = true;
+		// console.log("mouse down!");
+		var location = windowToCanvas(e.clientX,e.clientY);
+		alert(location.x+","+location.y);
+	};
+	// 鼠标放下
+	canvas.onmouseup = function(e) {
+		e.preventDefault();
+		isMouseDown = false;
+		// console.log("mouse up!");
+	};
+	// 鼠标移出
+	canvas.onmouseout = function(e) {
+		e.preventDefault();
+		isMouseDown = false;
+		// console.log("mouse out!");
+	};
+	// 鼠标移动
+	canvas.onmousemove = function(e) {
+		e.preventDefault();
+		if (isMouseDown) {
+			// draw
+			// console.log("mouse move!");
+		};
+	};
+	// 定义坐标指针
+	function windowToCanvas(x,y) {
+		var bbox = canvas.getBoundingClientRect();
+		return {x:Math.round(x-bbox.left),y:Math.round(y-bbox.top)};
+	}
+	// 米字格 
+	function drawGrid() {
+		context.save();
+
+		context.strokeStyle = "rgb(230,11,9)";
+
+		context.beginPath();
+		context.moveTo(3,3);
+		context.lineTo(canvasWidth - 3, 3);
+		context.lineTo(canvasWidth - 3, canvasHeight - 3);
+		context.lineTo(3, canvasHeight - 3);
+		context.closePath();
+
+		context.lineWidth = 6;
+		context.stroke();
+
+		context.beginPath();
+		context.moveTo(0,0);
+		context.lineTo(canvasWidth,canvasHeight);
+
+		context.moveTo(canvasWidth,0);
+		context.lineTo(0,canvasHeight);
+
+		context.moveTo(canvasWidth/2,0);
+		context.lineTo(canvasWidth/2,canvasHeight);
+
+		context.moveTo(0,canvasHeight/2);
+		context.lineTo(canvasWidth,canvasHeight/2);
+
+		context.lineWidth = 1;
+		context.stroke();
+
+		context.restore(); 
+	}
+	$(function(){
+		drawGrid();
+	});	
+</script>	
+</body>
+</html>

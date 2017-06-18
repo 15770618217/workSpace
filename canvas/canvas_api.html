@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<!-- 创建一个画布 -->
+	<canvas id="myFirstCanvas" width="500" height="400" style="background: #eee"></canvas>
+	<img id="myImg" src="images/contact-bg.jpg" alt="" style="display: none;" width="1000"; height="800"/>
+	<video id="myVideo" controls src="video/Wildlife.wmv" width="500" autoplay></video>
+	<script>
+		//获取canvas容器	
+		var canvas = document.getElementById('myFirstCanvas');
+		// 创建context对象
+		var ctx = canvas.getContext('2d');
+
+		// 绘制一个蓝色矩形
+		//ctx.fillStyle = 'blue';
+		//ctx.fillRect(0,0,100,80);
+
+		//绘制一条直线
+		/*ctx.moveTo(0,0);
+		ctx.lineTo(1000,800);
+		ctx.stroke();*/
+
+		// 绘制圆
+		// ctx.beginPath();
+		// ctx.arc(95,50,40,0,2*Math.PI);//圆心坐标、半径、起点、终点
+		// ctx.stroke();
+
+		//绘制文本
+		// ctx.font = "50px Arial";
+		// var grd = ctx.createLinearGradient(0,0,200,0);
+		// grd.addColorStop(0,"red");
+		// grd.addColorStop(1,"white");
+		// ctx.fillStyle = grd;
+		// ctx.shadowBlur = 20;
+		// ctx.shadowColor = "black";
+		// ctx.fillText("Hello World",10,50);
+
+		//ctx.strokeStyle = "blue"
+		//ctx.strokeText("Hello World",10,50);
+
+		// 绘制图片
+		// var img = document.getElementById("myImg");
+		// img.onload = function() {			
+		// 	ctx.drawImage(img,0,0);
+		// }
+
+		//绘制一个角
+		// ctx.beginPath();
+		// ctx.lineJoin = "miter";//round bevel bevel(默认)
+		// ctx.moveTo(20,20);
+		// ctx.lineTo(100,50);
+		// ctx.lineTo(20,100);
+		// ctx.lineWidth = 8; 
+		// ctx.strokeStyle = "blue";
+		// ctx.closePath();
+		// ctx.stroke();
+
+		//clearRect()
+		// ctx.fillStyle = "red";
+		// ctx.fillRect(0,0,300,150);
+		// ctx.clearRect(20,20,100,50);
+		// ctx.clearRect(180,20,100,50);
+		// ctx.beginPath();
+		// ctx.moveTo(0,100);
+		// ctx.quadraticCurveTo(150,150,300,100);//贝塞尔曲线
+		// ctx.stroke();
+
+		// 绘制两条直线
+		// ctx.beginPath();
+		// ctx.lineWidth="5";
+		// ctx.strokeStyle="green"; // Green path
+		// ctx.moveTo(0,75);
+		// ctx.lineTo(250,75);
+		// ctx.stroke(); // Draw it
+
+		// ctx.beginPath();
+		// ctx.strokeStyle="purple"; // Purple path
+		// ctx.moveTo(50,0);
+		// ctx.lineTo(150,130);
+		// ctx.stroke(); // Draw it
+
+		// arcTo()
+		// ctx.beginPath();
+		// ctx.moveTo(20,20);
+		// ctx.lineTo(100,20);
+		// ctx.arcTo(150,20,150,70,50);
+		// ctx.lineTo(150,120);
+		// ctx.stroke();
+
+		//isPointInPath()
+		// ctx.rect(20,20,150,100);
+		// if(ctx.isPointInPath(80,50)){
+		// 	ctx.fillStyle = "red";
+		// 	ctx.fill();
+		// }else{
+		// 	ctx.fillStyle = "green";
+		// 	ctx.fill();
+		// }
+
+		// video
+		var video = document.getElementById("myVideo");
+		video.addEventListener('play',function(){
+			var i = window.setInterval(function(){
+				ctx.drawImage(video,10,10,480,380);
+			})
+		},false);
+		video.addEventListener('pause',function(){
+			window.clearInterval(i);
+		},false);
+		video.addEventListener('ended',function(){
+			window.clearInterval(i)
+		},false);
+	</script>
+</body>
+</html>
