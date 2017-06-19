@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" 
+		  content="width = device-width,
+		  		   height = device-height,
+		  		   initial-scale = 1.0,
+		  		   minimum = 1.0,
+		  		   maximum = 1.0,
+		  		   user-scalable = no">
 	<title>写一个字</title>
 	<style>
 		#canvas {
@@ -9,7 +16,6 @@
 			margin: 0 auto;
 		}
 		#controller{
-			width: 600px;
 			margin: 0 auto;
 		}
 		.op_btn{
@@ -75,7 +81,7 @@
 <script src="lib/jquery.min.js"></script>
 <script>
 	// canvas初始大小
-	var canvasWidth = 600;
+	var canvasWidth = Math.min( 600 , $(window).width() - 20 );
 	var canvasHeight = canvasWidth;
 
 	var strokeColor = "black";
@@ -89,35 +95,22 @@
 
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
-	// 鼠标事件
-	// 按下鼠标事件
-	canvas.onmousedown = function(e) {
-		e.preventDefault();
+
+	// 控制区域大小
+	$('#controller').css("width",canvasWidth+"px");
+	// 触控事件
+	function beginStroke(point) {
 		isMouseDown = true;
 		// console.log("mouse down!");
-		lastLoc = windowToCanvas(e.clientX,e.clientY);
+		lastLoc = windowToCanvas(point.x,point.y);
 		//alert(location.x+","+location.y);
 		lastTimestamp = new Date().getTime();
-	};
-	// 鼠标放下
-	canvas.onmouseup = function(e) {
-		e.preventDefault();
+	}
+	function endStroke() {
 		isMouseDown = false;
-		// console.log("mouse up!");
-	};
-	// 鼠标移出
-	canvas.onmouseout = function(e) {
-		e.preventDefault();
-		isMouseDown = false;
-		// console.log("mouse out!");
-	};
-	// 鼠标移动
-	canvas.onmousemove = function(e) {
-		e.preventDefault();
-		if (isMouseDown) {
-			// draw
-			// console.log("mouse move!");
-			var curLoc = windowToCanvas(e.clientX,e.clientY);
+	}
+	function moveStroke(point) {
+			var curLoc = windowToCanvas(point.x,point.y);
 			var s = calcDistance(curLoc,lastLoc);
 			var curTimestamp = new Date().getTime();
 			var t = curTimestamp - lastTimestamp;
@@ -137,9 +130,53 @@
 
 			lastLoc = curLoc;	
 			lastTimestamp = curTimestamp;	
+	}
+	// 鼠标事件
+	// 按下鼠标事件
+	canvas.onmousedown = function(e) {
+		e.preventDefault();
+		beginStroke( {x:e.clientX, y:e.clientY} )
+	};
+	// 鼠标放下
+	canvas.onmouseup = function(e) {
+		e.preventDefault();
+		endStroke();
+		// console.log("mouse up!");
+	};
+	// 鼠标移出
+	canvas.onmouseout = function(e) {
+		e.preventDefault();
+		endStroke();
+		// console.log("mouse out!");
+	};
+	// 鼠标移动
+	canvas.onmousemove = function(e) {
+		e.preventDefault();
+		if (isMouseDown) {
+			// draw
+			// console.log("mouse move!");
+			moveStroke( {x:e.clientX, y:e.clientY} )
 		};
 	};
 
+	canvas.addEventListener("touchstart",function(e){
+		e.preventDefault();
+		touch = e.touches[0];
+		beginStroke( {x:touch.pageX, y:touch.pageY} )
+	});
+	canvas.addEventListener("touchmove",function(e){
+		e.preventDefault();
+		if (isMouseDown) {
+			// draw
+			// console.log("mouse move!");
+			touch = e.touches[0];
+			moveStroke( {x:touch.pageX, y:touch.pageY} )
+		};
+	});
+	canvas.addEventListener("touchend",function(e){
+		e.preventDefault();
+		endStroke();
+	})
 	// 减少硬编码
 	var maxLineWidth = 30;
 	var minLineWidth = 1;
