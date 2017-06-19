@@ -30,6 +30,33 @@
 		.clearfix{
 			display: both;
 		}
+		.color_btn{
+			float: left;
+			margin: 10px 10px 0 0;
+			border: 5px solid white;
+			width: 40px;
+			height: 40px;
+			border-radius: 5px 5px;
+			cursor: pointer;
+		}
+		.color_btn:hover{
+			border: 5px solid violet;
+		}
+		.color_btn_selected{
+			border: 5px solid blueviolet;
+		}
+		#black_btn{
+			background-color: black;
+		}
+		#blue_btn{
+			background-color: blue;
+		}
+		#green_btn{
+			background-color: green;
+		}
+		#orange_btn{
+			background-color: orange;
+		}
 	</style>
 </head>
 <body>
@@ -37,6 +64,11 @@
 	您的浏览器不支持canvas!
 </canvas>
 <div id="controller">
+	<div id="black_btn" class="color_btn color_btn_selected"></div>
+	<div id="blue_btn" class="color_btn"></div>
+	<div id="green_btn" class="color_btn"></div>
+	<div id="orange_btn" class="color_btn"></div>
+
 	<div id="clear_btn" class="op_btn">清除</div>
 	<div class="clearfix"></div>
 </div>
@@ -46,6 +78,7 @@
 	var canvasWidth = 600;
 	var canvasHeight = canvasWidth;
 
+	var strokeColor = "black";
 	var isMouseDown = false;
 	var lastLoc = {x:0,y:0};
 	var lastTimestamp = 0;
@@ -95,7 +128,7 @@
 			context.moveTo(lastLoc.x,lastLoc.y);
 			context.lineTo(curLoc.x,curLoc.y);
 
-			context.strokeStyle = "black";
+			context.strokeStyle = strokeColor;
 			context.lineWidth = lineWidth;
 			context.lineCap = "round";
 			context.lineJoin = "round";
@@ -184,6 +217,12 @@
 	$('#clear_btn').click(function(event) {
 		context.clearRect(0,0,canvasWidth,canvasHeight);
 		drawGrid();
+	});
+
+	$('.color_btn').click(function(){
+		$(".color_btn").removeClass('color_btn_selected');
+		$(this).addClass('color_btn_selected');
+		strokeColor = $(this).css("background-color");
 	});
 </script>	
 </body>
