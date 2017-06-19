@@ -8,12 +8,38 @@
 			display: block;
 			margin: 0 auto;
 		}
+		#controller{
+			width: 600px;
+			margin: 0 auto;
+		}
+		.op_btn{
+			float: right;
+			margin: 10px 0 0 10px;
+			border: 2px solid #aaa;
+			width: 80px;
+			height: 40px;
+			line-height: 40px;
+			font-size: 20px;
+			text-align: center;
+			border-radius: 5px 5px;
+			cursor: pointer;
+			background-color: white; 
+			font-weight: bold;
+			font-family: Microsoft Yahei,Arial;
+		}
+		.clearfix{
+			display: both;
+		}
 	</style>
 </head>
 <body>
 <canvas id="canvas">
 	您的浏览器不支持canvas!
 </canvas>
+<div id="controller">
+	<div id="clear_btn" class="op_btn">清除</div>
+	<div class="clearfix"></div>
+</div>
 <script src="lib/jquery.min.js"></script>
 <script>
 	// canvas初始大小
@@ -86,7 +112,7 @@
 	var minLineWidth = 1;
 	var maxStrokeV = 10;
 	var minStrokeV = 0.1;
-	
+
 	function calcLineWidth(t,s) {
 		var v = s/t;
 		var resultLineWidth;
@@ -153,6 +179,12 @@
 	$(function(){
 		drawGrid();
 	});	
+
+	// 清除事件
+	$('#clear_btn').click(function(event) {
+		context.clearRect(0,0,canvasWidth,canvasHeight);
+		drawGrid();
+	});
 </script>	
 </body>
 </html>
