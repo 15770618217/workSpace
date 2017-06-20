@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas室内结构图</title>
+	<meta name="viewport" 
+		  content="width = device-width,
+		  		   height = device-height,
+		  		   initial-scale = 1.0,
+		  		   minimum = 1.0,
+		  		   maximum = 1.0,
+		  		   user-scalable = no">
+	<link rel="stylesheet" href="lib/layui/css/layui.css">
+	<link rel="stylesheet" href="static/css/map.css">
+</head>
+<body>
+<img id="mapImage" src="images/map1.jpg" alt="" style="display: none;">
+<div class="contanier clearfix">
+	<div class="left-controller inner-container">
+		<img src="images/controller.jpg" alt="" width="100%">
+		<div class="btn-controller">
+			<button class="btn layui-btn" onclick="drawGridLine()">绘制</button>
+		</div>
+	</div>
+	<div class="right-map inner-container">
+		<canvas id="MapCanvas" class="MapCanvas"></canvas>
+	</div>
+</div>
+<script src="lib/jquery.min.js"></script>
+<script src="lib/layui/lay/dest/layui.all.js"></script>
+<script>
+// 初始化canvas大小
+var canvasWidth = $(window).width()*0.8;
+var canvasHeight = $(window).height();
+
+var isMouseDown = false;
+var curLoc = {x:0,y:0};
+var arrLoc = []; 
+
+var canvas = document.getElementById("MapCanvas");
+var ctx = canvas.getContext("2d");
+
+canvas.width = canvasWidth;
+canvas.height = canvasHeight; 
+// 将图片绘制进canvas中
+var mapImg = document.getElementById("mapImage");
+
+mapImg.onload = function(){ 
+	ctx.drawImage(mapImg,0,0,canvasWidth,canvasHeight);
+}
+
+// 画坐标点
+function drawGridPoint(point) {
+	isMouseDown = true;
+
+	curLoc = windowToCanvas(point.x,point.y);
+	//alert(curLoc.x+","+curLoc.y)
+	ctx.beginPath();
+	ctx.arc(curLoc.x,curLoc.y,5,0,2*Math.PI);
+	ctx.fillStyle = "red";
+	ctx.fill();
+
+	// 将坐标放入队列中
+	arrLoc.push(curLoc);
+	//console.log(arrLoc)
+}
+
+// 坐标之间画直线
+function drawGridLine() {
+	alert('开始')
+	ctx.save();
+
+	ctx.beginPath();
+	// 输入起点和终点，后台分析出最佳路径，返回若干坐标点，数组arrLoc
+	ctx.moveTo(arrLoc[0].x,arrLoc[0].y);//起点
+
+	for(var i=1; i<arrLoc.length; i++) {
+		ctx.lineTo(arrLoc[i].x,arrLoc[i].y);
+		ctx.strokeStyle = "red";
+		ctx.lineWidth = 5;
+		ctx.stroke();
+	}
+
+	ctx.restore();
+}
+
+// 添加鼠标事件
+canvas.onmousedown = function(e) {
+	e.preventDefault();
+	drawGridPoint( {x:e.clientX,y:e.clientY} );
+	// alert(e.clientX+","+e.clientY)
+}
+
+canvas.onmouseup = function(e) {
+	e.preventDefault();
+}
+
+canvas.onmouseout = function(e) {
+	e.preventDefault();
+}
+
+canvas.onmousemove = function(e) {
+	e.preventDefault();
+}
+
+// 鼠标滚轮事件
+if (canvas.addEventListener) {  
+  
+    // IE9, Chrome, Safari, Opera  
+    canvas.addEventListener("mousewheel", scaleCanvas, false);  
+    // Firefox  
+    canvas.addEventListener("DOMMouseScroll", scaleCanvas, false);  
+}else{  
+    // IE 6/7/8  
+    canvas.attachEvent("onmousewheel", scaleCanvas);  
+}  
+  
+function scaleCanvas(e){  
+    e.preventDefault();  
+    var e = window.e || e; 
+    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    //alert(delta+"->"+ e.wheelDelta+'->'+ e.detail);  
+}  
+
+// 定义坐标指针
+function windowToCanvas(x,y) {
+	var bbox = canvas.getBoundingClientRect();
+	return {x:Math.round(x-bbox.left),y:Math.round(y-bbox.top)};
+}
+</script>
+</body>
+</html>
