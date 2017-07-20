@@ -1,17 +1,20 @@
 <template>
 	<div class="gasPage">
 		<div class="topToolNav">
-				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent">增加</el-button>
-               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent">编辑</el-button>
-                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent">删除</el-button>
+				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent" v-show="layout.addBtnShow">增加</el-button>
+               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent" v-show="layout.editBtnShow">编辑</el-button>
+                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent" v-show="layout.deleteBtnShow">删除</el-button>
 				<el-input placeholder="请输入查询关键字" v-model="keyword" class="searchInput">
-			    <el-select v-model="select" slot="prepend" placeholder="关键字选择">
-			      <el-option label="所属气站" value="1"></el-option>
-			      <el-option label="工号" value="2"></el-option>
-			      <el-option label="名字" value="3"></el-option>
-			      <el-option label="身份证号" value="4"></el-option>
-			    </el-select>
-			    <el-button slot="append" icon="search"></el-button>
+			    <!-- 选择公司名 -->
+	            <el-select v-model="firmSelect" slot="prepend" placeholder="请输入查询的公司" v-show="layout.firmSelectShow" @change="searchFirmSelectToFirmId">
+	                <el-option
+	                    v-for="item in AllFirm" 
+	                    :key="item.name"
+	                    :label="item.name" 
+	                    :value="item.id">
+	                </el-option>
+	            </el-select>
+			    <el-button slot="append" icon="search" @click="startSearchEvent"></el-button>
 			</el-input>
 		</div>
 
@@ -61,13 +64,14 @@
 	            </el-table-column>
 	             <el-table-column
 	                prop="gasWeight"
-	                label="钢瓶重量">
+	                label="钢瓶重量(kg)">
 	            </el-table-column>
 	            <el-table-column
 	                prop="yearsOfUse"
-	                label="设计使用年限">
+	                label="设计使用年限(年)">
 	            </el-table-column>
 	        </el-table>
+	        <h4 class="hintMsg">气瓶信息管理中可查询的关键字：出厂编号、自有钢瓶编号、制造单位、钢瓶种类、钢瓶状态、钢瓶型号、钢瓶重量、创建人、使用年限、公司名称</h4>
 	        <el-pagination
 	            @size-change="handleSizeChange"
 	            @current-change="handleCurrentChange"
@@ -80,7 +84,7 @@
 	    </div>
 
 	   	<!-- 添加按钮弹出框 -->
-	    <el-dialog title="增加操作工信息" :visible.sync="add.addDialogFormVisible">
+	    <el-dialog title="增加气瓶信息" :visible.sync="add.addDialogFormVisible">
 	      <el-form :model="add.form" :label-width="add.formLabelWidth">
 		      	<el-row>
 				  <el-col :span="12">
@@ -136,7 +140,7 @@
 
 				<el-row>
 				  <el-col :span="12">
-				  	<el-form-item label="钢瓶重量">
+				  	<el-form-item label="钢瓶重量(kg)">
 			          <el-input v-model="add.form.gasWeight" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
@@ -146,6 +150,21 @@
 			        </el-form-item>
 				  </el-col>
 				</el-row> 
+
+				<el-row v-if="layout.conpanyShow">
+				  <el-col :span="24">
+				  	<el-form-item label="燃气公司" :label-width="add.formLabelWidth">
+			          <el-select v-model="add.firmName" placeholder="请选择燃气公司">
+			            <el-option 
+			                v-for="item in AllFirm" 
+			                :key="item.name"
+			                :label="item.name" 
+			                :value="item.name">
+			            </el-option>
+			          </el-select>
+			        </el-form-item>
+				  </el-col>
+				</el-row>
 		    </el-form>
 		    <div slot="footer" class="dialog-footer">
 		        <el-button @click="addDialogFormVisible = false">取 消</el-button>
@@ -154,17 +173,17 @@
 	    </el-dialog>
 
 	    <!-- 编辑按钮弹出框 -->
-	    <el-dialog title="增加操作工信息" :visible.sync="edit.editDialogFormVisible">
-	      <el-form :model="selectedFormRow" :label-width="edit.formLabelWidth">
+	    <el-dialog title="气瓶信息编辑" :visible.sync="edit.editDialogFormVisible">
+	      <el-form :model="edit.form" :label-width="edit.formLabelWidth">
 		      	<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="出厂编号">
-			          <el-input v-model="selectedFormRow.serialNumber" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.serialNumber" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="自有钢瓶编号">
-			          <el-input v-model="selectedFormRow.ownGasNumber" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.ownGasNumber" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -172,12 +191,12 @@
 	       		<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="制造单位">
-			          <el-input v-model="selectedFormRow.makeUnit" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.makeUnit" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="制造年月">
-			          <el-input v-model="selectedFormRow.makeTime" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.makeTime" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -185,12 +204,12 @@
 				<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="下检年月">
-			          <el-input v-model="selectedFormRow.checkTime" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.checkTime" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="钢瓶种类">
-			          <el-input v-model="selectedFormRow.gasSpecies" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.gasSpecies" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -198,28 +217,43 @@
 				<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="钢瓶状态">
-			          <el-input v-model="selectedFormRow.gasState" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.gasState" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="钢瓶型号">
-			          <el-input v-model="selectedFormRow.gasModel" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.gasModel" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
 
 				<el-row>
 				  <el-col :span="12">
-				  	<el-form-item label="钢瓶重量">
-			          <el-input v-model="selectedFormRow.gasWeight" auto-complete="off"></el-input>
+				  	<el-form-item label="钢瓶重量(kg)">
+			          <el-input v-model="edit.form.gasWeight" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="设计使用年限">
-			          <el-input v-model="selectedFormRow.yearsOfUse" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.yearsOfUse" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row> 
+
+				<el-row v-if="layout.conpanyShow">
+				  <el-col :span="24">
+				  	<el-form-item label="燃气公司" :label-width="add.formLabelWidth">
+			          <el-select v-model="selectedFormRow.company" placeholder="请选择燃气公司">
+			            <el-option 
+			                v-for="item in AllFirm" 
+			                :key="item.name"
+			                :label="item.name" 
+			                :value="item.name">
+			            </el-option>
+			          </el-select>
+			        </el-form-item>
+				  </el-col>
+				</el-row>
 		    </el-form>
 		    <div slot="footer" class="dialog-footer">
 		        <el-button @click="editDialogFormVisible = false">取 消</el-button>
@@ -245,12 +279,29 @@
 	export default {
 		data () {
 			return {
+				layout:{
+					addBtnShow: true,
+					editBtnShow: true,
+					deleteBtnShow: true,
+					conpanyShow: false,
+					firmSelectShow: null,
+				},
+
+				firmWord: '',
+				firmSelect: '',
 				keyword: '',
-				select: '',
+
+				searchData: {
+					firmId: '',
+					key: ''
+				},
+
 				tableData: [],
 				totalPage: 5,
 				currentPage: 1,
 				pageNumber: 5,
+				// 全部公司名称
+				AllFirm: [],
 				// 当前勾选的记录条信息 
                 selectedFormRow: [],
                 // 当前多选的记录条数信息
@@ -259,6 +310,7 @@
 				add: {
 					addDialogFormVisible: false,
 					formLabelWidth: '100px',
+					firmName: '',
 					form: {
 						serialNumber: '',
 						ownGasNumber: '',
@@ -287,7 +339,8 @@
 						gasState: '',
 						gasModel: '',
 						gasWeight: '',
-						yearsOfUse: ''
+						yearsOfUse: '',
+						firmId: ''
 					}
 				},
 
@@ -300,6 +353,10 @@
 			}
 		},
 
+		props:[
+			'AccountType'
+		],
+
 		methods: {
 			handleSizeChange:function( val ) {
                
@@ -310,15 +367,88 @@
             },
 
             handleSelectionChange( val ) {
-               console.log(val)
                if(val.length !== 0){
-                   this.selectedFormRow = val[0];                      
+                  	this.selectedFormRow = val[0];   
+
+					this.edit.form.id = this.selectedFormRow.id;
+					this.edit.form.serialNumber = this.selectedFormRow.serialNumber;
+					this.edit.form.ownGasNumber = this.selectedFormRow.ownGasNumber;
+					this.edit.form.makeUnit = this.selectedFormRow.makeUnit;
+					this.edit.form.makeTime = this.selectedFormRow.makeTime;
+					this.edit.form.checkTime = this.selectedFormRow.checkTime;
+					this.edit.form.gasSpecies = this.selectedFormRow.gasSpecies;
+					this.edit.form.gasState = this.selectedFormRow.gasState;
+					this.edit.form.gasModel = this.selectedFormRow.gasModel;
+					this.edit.form.gasWeight = this.selectedFormRow.gasWeight;
+					this.edit.form.yearsOfUse = this.selectedFormRow.yearsOfUse;
+                   
                 }
             },
 
             handleSelected: function( selection, row ) {
                 this.selectedRowTotal = selection;
-                console.log(this.selectedFormRow);
+            },
+
+            initLayout: function() {
+            	// 三种账户类型
+            	if(this.AccountType.type === 1) {
+            		this.layout.addBtnShow = false;
+            		this.layout.editBtnShow = false;
+            		this.layout.deleteBtnShow = false;
+            		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
+            	}else if(this.AccountType.type === 2) {
+            		this.layout.addBtnShow = true;
+            		this.layout.editBtnShow = true;
+            		this.layout.deleteBtnShow = true;
+            		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
+            	}else if(this.AccountType.type === 3) {
+            		this.layout.addBtnShow = true;
+            		this.layout.editBtnShow = true;
+            		this.layout.deleteBtnShow = true;
+            		this.layout.conpanyShow = true;
+            		this.layout.firmSelectShow = true;
+            	}
+            },
+
+            findAllFirm: function() {
+            	let _this = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify({
+                    	id:1
+                    }),
+                    contentType: "application/json",
+                    url: path.url + "findAllFirm",
+                    success: function( res ) {	
+                       	_this.AllFirm = res.result.data;
+
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+                });  
+            },
+
+            searchFirmSelectToFirmId: function() {
+            	let _this = this;
+            	_this.searchData.firmId = _this.firmSelect;
+            },
+
+            startSearchEvent: function() {
+            	let _this = this;
+
+            	_this.searchData.key = _this.keyword;
+            	_this.initGrid(1);
             },
 
             initGrid: function( val ) {
@@ -332,26 +462,26 @@
                     },
                     crossDomain: true,
                     data:JSON.stringify({
-                    	key: "",
+                    	key: _this.searchData.key,
+                    	firmId: _this.searchData.firmId,
                     	pageIndex: val,
                     	pageTotal: _this.pageNumber
                     }),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/gasbottles",
+                    url: path.url + "gasbottles",
                     success: function( res ) {
-                        console.log(res)
                         _this.totalPage = res.result.count;
                         _this.tableData = res.result.data;
-                        // _this.initGrid(_this.currentPage) 
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
                 });  
             },
 
 			addEvent: function() {
-				alert('add');
 				let _this = this;
 
 				_this.add.form.serialNumber = '';
@@ -364,13 +494,19 @@
 				_this.add.form.gasModel = '',
 				_this.add.form.gasWeight = '',
 				_this.add.form.yearsOfUse = ''
+				_this.add.form.firmId = ''
 
 				_this.add.addDialogFormVisible = true;
 			},
 			
 			trueToAddEvent: function() {
 				let _this = this;
-				// console.log(_this.add.form)
+				$.each(_this.AllFirm, function(key, val){
+					if(val.name === _this.add.firmName) {
+						_this.add.form.firmId = val.id;
+					}
+				});
+
 				$.ajax({
 					type: "PUT",
                     dataType: "json", 
@@ -381,7 +517,7 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.add.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/gasbottle",
+                    url: path.url + "gasbottle",
                     success: function( res ) {
                        if(res.code === '0') {
                             _this.add.addDialogFormVisible = false;
@@ -403,14 +539,15 @@
                             });
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				});
 			},
 
 			editEvent: function() {
-				alert('edit')
 				let _this = this;
                 if(_this.selectedRowTotal.length === 0) {
                     this.$notify({
@@ -435,20 +572,7 @@
 
 			trueToEditEvent: function() {
 				let _this = this;
-				
-				_this.edit.form.id = _this.selectedFormRow.id;
-				_this.edit.form.serialNumber = _this.selectedFormRow.serialNumber;
-				_this.edit.form.ownGasNumber = _this.selectedFormRow.ownGasNumber;
-				_this.edit.form.makeUnit = _this.selectedFormRow.makeUnit;
-				_this.edit.form.makeTime = _this.selectedFormRow.makeTime;
-				_this.edit.form.checkTime = _this.selectedFormRow.checkTime;
-				_this.edit.form.gasSpecies = _this.selectedFormRow.gasSpecies;
-				_this.edit.form.gasState = _this.selectedFormRow.gasState;
-				_this.edit.form.gasModel = _this.selectedFormRow.gasModel;
-				_this.edit.form.gasWeight = _this.selectedFormRow.gasWeight;
-				_this.edit.form.yearsOfUse = _this.selectedFormRow.yearsOfUse;
 
-				// console.log(_this.edit.form)
 				$.ajax({
 					type: "POST",
                     dataType: "json", 
@@ -459,7 +583,7 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.edit.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/gasbottle",
+                    url: path.url + "gasbottle",
                     success: function( res ) {
                         if(res.code === '0') { 
                                 _this.edit.editDialogFormVisible = false;
@@ -481,14 +605,15 @@
                                 });
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				});
 			},
 
 			deleteEvent: function() {
-				alert('delete')
 				let _this = this;
 				if(_this.selectedRowTotal.length === 0) {
                    	this.$notify({
@@ -507,7 +632,6 @@
 
                 _this.deleteMsg.form.id = _this.selectedFormRow.id;
 
-                console.log(_this.deleteMsg.form.id)
                 $.ajax({
 					type: "DELETE",
                     dataType: "json", 
@@ -518,9 +642,9 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.deleteMsg.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/gasbottle",
+                    url: path.url + "gasbottle",
                     success: function( res ) {
-                    	// console.log(res)
+
                        if(res.code === '0') {
                             _this.deleteMsg.deleteDialogFormVisible = false;
                                 
@@ -541,8 +665,10 @@
                            	});
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				}); 
            	},
@@ -558,10 +684,29 @@
 
 		mounted: function() {
 			this.initGrid(1);
+			this.initLayout();
+			this.findAllFirm();
 		}
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.el-row {
 	    margin-bottom: 20px;
 	    &:last-child {
@@ -587,9 +732,9 @@
 		height: 10%;
 		background-color: white;
 	}
-	/*.el-select,.el-input {
-    	width: 135px!important;
-  	}*/
+	.el-select,.el-input {
+    	width: 185px!important;
+  	}
   	.topToolNav .toLayoutBtn{
 		position: absolute;
 		top: 50%;
@@ -612,6 +757,10 @@
     	right: 0;
     	margin-top: -18px;
     	margin-right: 30px;
+	}
+	.hintMsg{
+		margin-top: 10px;
+		color: red;
 	}
 	.pagination{
 		position: absolute;

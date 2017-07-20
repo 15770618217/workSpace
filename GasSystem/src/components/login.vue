@@ -72,21 +72,26 @@ import Axios from 'axios'
 				$.ajax({
     			  type: "post",
     	          dataType: "json",
-    	          url: "http://10.0.0.244:8089/gas/web/account/login",
+    	          url: path.url + "account/login",
     	          xhrFields:{
     	              withCredentials:true
     	          },
     	          crossDomain: true,
     	          data:JSON.stringify({
-    	          	mobile: '149',
-					password: '123'	
+    	          	mobile: _this.formName.user,
+					password: _this.formName.password	
     	          }),
     	          contentType: "application/json",
     	          success:function(res) { 
-    	          	console.log(res.result.result);
     	            if ( res.code === '0' ) {
 					 		//响应成功，与父组件通信传值
 							_this.$emit( 'showState', [ _this.loginShow, _this.formName.user, res.result.result] )
+					 	}else{
+					 		_this.$notify({
+                                  title: '失败',
+                                  message: res.description,
+                                  type: 'warning'
+                            });
 					 	}
     	          }
     	       });
@@ -118,10 +123,27 @@ import Axios from 'axios'
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.dialog{
 		width: 100%;
 		height: 100%;
-		background: url(../assets/images/bg.png);
+		background: url(../static/images/bg.png);
 	}
 	.loginPage{
 		z-index: 10;
@@ -152,12 +174,10 @@ import Axios from 'axios'
 	.loginPage .userLogo{
 		top: 40px;
 		left: 10px;
-		/*background: url(../assets/images/user.png);*/
 	}
 	.loginPage .passwordLogo{
 		top: 40px;
 		left: 10px;
-		/*background: url(../assets/images/passage.png);*/
 	}
 	.loginPage p{
 		color: red;

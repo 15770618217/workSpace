@@ -1,15 +1,19 @@
 <template>
 	<div class="customerPage">
 		<div class="topToolNav">
-			<el-button class="toLayoutBtn LayoutBtnShow" type="primary" :class="{btn:true}" @click="showEvent">显示</el-button>
-            <el-button class="toLayoutBtn LayoutBtnHide" type="primary" :class="{btn:true}" @click="hideEvent">隐藏</el-button>
+			<!-- <el-button class="toLayoutBtn LayoutBtnShow" type="primary" :class="{btn:true}" @click="showEvent">显示</el-button>
+            <el-button class="toLayoutBtn LayoutBtnHide" type="primary" :class="{btn:true}" @click="hideEvent">隐藏</el-button> -->
 			<el-input placeholder="请输入查询关键字" v-model="keyword" class="searchInput">
-			    <el-select v-model="select" slot="prepend" placeholder="关键字选择">
-			      <el-option label="姓名" value="1"></el-option>
-			      <el-option label="电话" value="2"></el-option>
-			      <el-option label="身份证号" value="3"></el-option>
-			    </el-select>
-			    <el-button slot="append" icon="search" @click="searchEvent"></el-button>
+			     <!-- 选择公司名 -->
+	            <el-select v-model="firmSelect" filterable placeholder="请输入查询的公司" slot="prepend" v-show="layout.firmSelectShow" @change="searchFirmSelectToFirmId">
+	                <el-option
+	                    v-for="item in AllFirm" 
+	                    :key="item.name"
+	                    :label="item.name" 
+	                    :value="item.id">
+	                </el-option>
+	            </el-select>
+			    <el-button slot="append" icon="search"  @click="startSearchEvent"></el-button>
 			</el-input>
 		</div>
 		<div class="tableArea">
@@ -61,7 +65,7 @@
 	                label="身份证照片">
 	            </el-table-column>
 	        </el-table>
-	        <h4 class="hintMsg">背景为灰色的是隐藏信息。</h4>
+	        <h4 class="hintMsg">客户信息管理中可查询的关键字：客户名、户籍、手机号、身份证、身份证地址、所属公司名、性别、用气地址。</h4>
 	        <el-pagination
 	            @size-change="handleSizeChange"
 	            @current-change="handleCurrentChange"
@@ -78,48 +82,31 @@
 	export default {
 		data () {
 			return {
+				layout: {
+					firmSelectShow: null
+				},
+
+				firmWord: '',
+				firmSelect: '',
 				keyword: '',
-				select: '',
-				tableData: [
-					{
-						name: '刘亦菲',
-						sex: '女',
-						nation: '汉',
-						birthday: '1990年10月10',
-						mobile: '13402202685',
-						idCard: '330424199010102017',
-						idCardAddress: '杭州市滨江区网易园区',
-						address: '杭州市滨江区阿里园区',
-						idCardImg: 'http://www.CDN.com'
-					},
-					{
-						name: '刘亦菲',
-						sex: '女',
-						nation: '汉',
-						birthday: '1990年10月10',
-						mobile: '13402202685',
-						idCard: '330424199010102017',
-						idCardAddress: '杭州市滨江区网易园区',
-						address: '杭州市滨江区阿里园区',
-						idCardImg: 'http://www.CDN.com'
-					},
-					{
-						name: '刘亦菲',
-						sex: '女',
-						nation: '汉',
-						birthday: '1990年10月10',
-						mobile: '13402202685',
-						idCard: '330424199010102017',
-						idCardAddress: '杭州市滨江区网易园区',
-						address: '杭州市滨江区阿里园区',
-						idCardImg: 'http://www.CDN.com'
-					}
-				],
+
+				AllFirm: [],
+
+				searchData: {
+					firmId: '',
+					key: ''
+				},
+
+				tableData: [],
 				totalPage: 50,
 				currentPage: 1,
 				pageNumber: 10,
 			}
 		},
+
+		props:[
+			'AccountType'
+		],
 
 		methods: {
 			handleSizeChange:function( val ) {
@@ -127,14 +114,34 @@
             },
 
             handleCurrentChange:function( val ) {
+            	this.initGrid(val);
             },
 
             handleSelectionChange( val ) {
-                
+                if(val.length !== 0){
+                  	this.selectedFormRow = val[0];                     
+                }
             },
 
-            handleSelected() {
+            handleSelected: function( selection, row ) {
+                this.selectedRowTotal = selection;
+            },
 
+            initLayout: function() {
+            	// 三种账户类型
+            	if(this.AccountType.type === 1) {
+            		this.layout.firmSelectShow = false;
+            	
+            	}else if(this.AccountType.type === 2) {
+            		this.layout.firmSelectShow = false;
+            	
+            	}else if(this.AccountType.type === 3) {
+            		this.layout.firmSelectShow = true;
+            	
+            	}else {
+            		this.layout.firmSelectShow = false;
+            		return false;
+            	}
             },
 
             showEvent: function() {
@@ -145,7 +152,7 @@
             	
             },
 
-            initGrid: function(value) {
+            findAllFirm: function() {
             	let _this = this;
                 $.ajax({
                     type: "POST",
@@ -156,39 +163,91 @@
                     },
                     crossDomain: true,
                     data:JSON.stringify({
-                    	key: "",
-                    	pageIndex: 1,
-                    	pageTotal: 10
+                    	id:1
                     }),
                     contentType: "application/json",
-                    url: path.url + "customers",
-                    success: function(res) {
-                        console.log(res)
-                        _this.totalPage = res.result.count;
-                        _this.tableData = res.result.data;
+                    url: path.url + "findAllFirm",
+                    success: function( res ) {	
+                       	_this.AllFirm = res.result.data;
+
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
                 });  
             },
 
-            searchEvent: function() {
-            	if(this.keyword === ''){
-            		return false;
-            	}else{
-            		console.log(this.keyword);
-            		
-            	}
-            }
+            searchFirmSelectToFirmId: function() {
+            	let _this = this;
+            	_this.searchData.firmId = _this.firmSelect;
+            },
+
+            startSearchEvent: function() {
+            	let _this = this;
+            	_this.searchData.key = _this.keyword;
+            	_this.initGrid(1);
+            },
+
+            initGrid: function( val ) {
+
+            	let _this = this;
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify({
+                    	key: _this.searchData.key,
+                    	firmId: _this.searchData.firmId,
+                    	pageIndex: val,
+                    	pageTotal: _this.pageNumber
+                    }),
+                    contentType: "application/json",
+                    url: path.url + "customers",
+                    success: function(res) {
+                        _this.totalPage = res.result.count;
+                        _this.tableData = res.result.data;
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+                });  
+            },
 		},
 
 		mounted: function() {
 			this.initGrid(1);
+			this.initLayout();
+			this.findAllFirm();
 		}
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.customerPage{
 		width: 100%;
 		height: 100%;
@@ -200,7 +259,7 @@
 		background-color: white;
 	}
 	.el-select,.el-input {
-    	width: 135px!important;
+    	width: 185px!important;
   	}
   	.searchInput{
   		position: absolute;

@@ -1,17 +1,20 @@
 <template>
 	<div class="workerPage">
 		<div class="topToolNav">
-				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent">增加</el-button>
-               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent">编辑</el-button>
-                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent">删除</el-button>
+				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent" v-show="layout.addBtnShow">增加</el-button>
+               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent" v-show="layout.editBtnShow">编辑</el-button>
+                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent" v-show="layout.deleteBtnShow">删除</el-button>
 				<el-input placeholder="请输入查询关键字" v-model="keyword" class="searchInput">
-			    <el-select v-model="select" slot="prepend" placeholder="关键字选择">
-			      <el-option label="所属气站" value="1"></el-option>
-			      <el-option label="工号" value="2"></el-option>
-			      <el-option label="名字" value="3"></el-option>
-			      <el-option label="身份证号" value="4"></el-option>
-			    </el-select>
-			    <el-button slot="append" icon="search"></el-button>
+			     <!-- 选择公司名 -->
+	            <el-select v-model="firmSelect" slot="prepend" placeholder="请输入查询的公司" v-show="layout.firmSelectShow" @change="searchFirmSelectToFirmId">
+	                <el-option
+	                    v-for="item in AllFirm" 
+	                    :key="item.name"
+	                    :label="item.name" 
+	                    :value="item.id">
+	                </el-option>
+	            </el-select>
+			    <el-button slot="append" icon="search" @click="startSearchEvent"></el-button>
 			</el-input>
 		</div>
 
@@ -28,19 +31,19 @@
 	                type="selection">   
 	            </el-table-column>
 	            <el-table-column
-	                prop="firmId"
+	                prop="firmName"
 	                label="所属公司">
 	            </el-table-column>
 	            <el-table-column
-	                prop="station"
+	                prop="storeName"
 	                label="所属气站">
 	            </el-table-column>
 	            <el-table-column
-	                prop="workType"
+	                prop="worktype"
 	                label="工种">
 	            </el-table-column>
 	            <el-table-column
-	                prop="jobNumber"
+	                prop="jobnumber"
 	                label="工号">
 	            </el-table-column>
 	            <el-table-column
@@ -52,11 +55,7 @@
 	                label="性别">
 	            </el-table-column>
 	             <el-table-column
-	                prop="password"
-	                label="密码">
-	            </el-table-column>
-	             <el-table-column
-	                prop="idCard"
+	                prop="idcard"
 	                label="身份证号">
 	            </el-table-column>
 	             <el-table-column
@@ -64,10 +63,15 @@
 	                label="住址">
 	            </el-table-column>
 	            <el-table-column
-	                prop="IMEICode"
+	                prop="mobile"
+	                label="联系电话">
+	            </el-table-column>
+	            <el-table-column
+	                prop="imeiCode"
 	                label="手机IMEI码">
 	            </el-table-column>
 	        </el-table>
+	        <h4 class="hintMsg">操作工信息管理中可查询的关键字：工号、身份证、手机。</h4>
 	        <el-pagination
 	            @size-change="handleSizeChange"
 	            @current-change="handleCurrentChange"
@@ -83,14 +87,28 @@
 	    <el-dialog title="增加操作工信息" :visible.sync="add.addDialogFormVisible">
 	      <el-form :model="add.form" :label-width="add.formLabelWidth">
 		      	<el-row>
-				  <el-col :span="12">
-				  	<el-form-item label="所属公司">
-			          <el-input v-model="add.form.firmId" auto-complete="off"></el-input>
+		      	   <el-col :span="12" v-show="layout.conpanyShow">
+				  	<el-form-item label="所属公司" :label-width="add.formLabelWidth">
+			          <el-select v-model="add.firmName" placeholder="请选择燃气公司" @change="addFirmSelectToStore">
+			            <el-option 
+			                v-for="item in AllFirm" 
+			                :key="item.name"
+			                :label="item.name" 
+			                :value="item.name">
+			            </el-option>
+			          </el-select>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
-				  	<el-form-item label="所属气站">
-			          <el-input v-model="add.form.station" auto-complete="off"></el-input>
+				  	<el-form-item label="所属气站" :label-width="add.formLabelWidth">
+			          <el-select v-model="add.form.storeName" placeholder="请选择燃气气站">
+			            <el-option 
+			                v-for="item in AllStore" 
+			                :key="item.storeName"
+			                :label="item.storeName" 
+			                :value="item.storeName">
+			            </el-option>
+			          </el-select>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -98,12 +116,12 @@
 	       		<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="工种">
-			          <el-input v-model="add.form.workType" auto-complete="off"></el-input>
+			          <el-input v-model="add.form.worktype" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="工号">
-			          <el-input v-model="add.form.jobNumber" auto-complete="off"></el-input>
+			          <el-input v-model="add.form.jobnumber" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -123,26 +141,34 @@
 
 				<el-row>
 				  <el-col :span="12">
-				  	<el-form-item label="密码">
-			          <el-input v-model="add.form.password" auto-complete="off"></el-input>
+				  	<el-form-item label="住址">
+			          <el-input v-model="add.form.address" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="身份证号">
-			          <el-input v-model="add.form.idCard" auto-complete="off"></el-input>
+			          <el-input v-model="add.form.idcard" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
 
 				<el-row>
 				  <el-col :span="12">
-				  	<el-form-item label="住址">
-			          <el-input v-model="add.form.address" auto-complete="off"></el-input>
+				  	<el-form-item label="密码">
+			          <el-input v-model="add.form.password" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
+				  	<el-form-item label="联系电话">
+			          <el-input v-model="add.form.mobile" auto-complete="off"></el-input>
+			        </el-form-item>
+				  </el-col>
+				</el-row> 
+
+				<el-row>
+				  <el-col :span="24">
 				  	<el-form-item label="手机IMEI码">
-			          <el-input v-model="add.form.IMEICode" auto-complete="off"></el-input>
+			          <el-input v-model="add.form.imeiCode" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row> 
@@ -154,17 +180,31 @@
 	    </el-dialog>
 
 	    <!-- 编辑按钮弹出框 -->
-	    <el-dialog title="增加操作工信息" :visible.sync="edit.editDialogFormVisible">
-	      <el-form :model="selectedFormRow" :label-width="edit.formLabelWidth">
+	    <el-dialog title="编辑操作工信息" :visible.sync="edit.editDialogFormVisible">
+	      <el-form :model="edit.form" :label-width="edit.formLabelWidth">
 		      	<el-row>
-				  <el-col :span="12">
-				  	<el-form-item label="所属公司">
-			          <el-input v-model="selectedFormRow.firmId" auto-complete="off"></el-input>
+				  <el-col :span="12" v-show="layout.conpanyShow">
+				  	<el-form-item label="燃气公司" :label-width="add.formLabelWidth">
+			          <el-select v-model="edit.firmName" placeholder="请选择燃气公司" @change="editFirmSelectToStore">
+			            <el-option 
+			                v-for="item in AllFirm" 
+			                :key="item.name"
+			                :label="item.name" 
+			                :value="item.name">
+			            </el-option>
+			          </el-select>
 			        </el-form-item>
 				  </el-col>
-				  <el-col :span="12">
-				  	<el-form-item label="所属气站">
-			          <el-input v-model="selectedFormRow.station" auto-complete="off"></el-input>
+				   <el-col :span="12">
+				  	<el-form-item label="所属气站" :label-width="edit.formLabelWidth">
+			          <el-select v-model="edit.form.storeName" placeholder="请选择燃气公司">
+			            <el-option 
+			                v-for="item in AllStore" 
+			                :key="item.storeName"
+			                :label="item.storeName" 
+			                :value="item.storeName">
+			            </el-option>
+			          </el-select>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -172,12 +212,12 @@
 	       		<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="工种">
-			          <el-input v-model="selectedFormRow.workType" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.worktype" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="工号">
-			          <el-input v-model="selectedFormRow.jobNumber" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.jobnumber" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -185,38 +225,38 @@
 				<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="姓名">
-			          <el-input v-model="selectedFormRow.name" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.name" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="性别">
-			          <el-input v-model="selectedFormRow.sex" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.sex" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
 
 				<el-row>
-				  <el-col :span="12">
-				  	<el-form-item label="密码">
-			          <el-input v-model="selectedFormRow.password" auto-complete="off"></el-input>
-			        </el-form-item>
-				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="身份证号">
-			          <el-input v-model="selectedFormRow.idCard" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.idcard" auto-complete="off"></el-input>
+			        </el-form-item>
+				  </el-col>
+				   <el-col :span="12">
+				  	<el-form-item label="住址">
+			          <el-input v-model="edit.form.address" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
 
 				<el-row>
 				  <el-col :span="12">
-				  	<el-form-item label="住址">
-			          <el-input v-model="selectedFormRow.address" auto-complete="off"></el-input>
+				  	<el-form-item label="联系电话">
+			          <el-input v-model="edit.form.mobile" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="手机IMEI码">
-			          <el-input v-model="selectedFormRow.IMEICode" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.imeiCode" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row> 
@@ -226,55 +266,49 @@
 		        <el-button type="primary" @click="trueToEditEvent()">确 定</el-button>
 		    </div>
 	    </el-dialog>
+
+	    <!-- 删除按钮弹出框 -->
+	    <el-dialog
+	      title="提示"
+	      :visible.sync="deleteMsg.deleteDialogFormVisible"
+	      size="tiny"
+	      :before-close="handleClose">
+	      <span>是否确定删除该条信息？</span>
+	      <span slot="footer" class="dialog-footer">
+	        <el-button @click="deleteDialogFormVisible = false">取 消</el-button>
+	        <el-button type="primary" @click="trueToDeleteEvent">确 定</el-button>
+	      </span>
+	    </el-dialog>
 	</div>
 </template>
 <script>
 	export default {
 		data () {
 			return {
+				layout:{
+					addBtnShow: true,
+					editBtnShow: true,
+					deleteBtnShow: true,
+					conpanyShow: false,
+					firmSelectShow: null,
+				},
+
+				AllFirm: [],
+				AllStore: [],
+
+				firmWord: '',
+				firmSelect: '',
 				keyword: '',
-				select: '',
-				tableData: [
-					{
-						firmId: '义乌燃气公司',
-						station: '义务气站',
-						workType: '充装工',
-						jobNumber: '001',
-						name: '张三',
-						sex: '男',
-						password: '123',
-						idCard: '123123',
-						address: '义乌',
-						IMEICode: '134909090909'
-					},
-					{
-						firmId: '义乌燃气公司',
-						station: '义务气站',
-						workType: '充装工',
-						jobNumber: '001',
-						name: '张三',
-						sex: '男',
-						password: '123',
-						idCard: '123123',
-						address: '义乌',
-						IMEICode: '134909090909'
-					},
-					{
-						firmId: '义乌燃气公司',
-						station: '义务气站',
-						workType: '充装工',
-						jobNumber: '001',
-						name: '张三',
-						sex: '男',
-						password: '123',
-						idCard: '123123',
-						address: '义乌',
-						IMEICode: '134909090909'
-					}			
-				],
-				totalPage: 50,
+
+				searchData: {
+					firmId: '',
+					key: ''
+				},
+
+				tableData: [],
+				totalPage: 5,
 				currentPage: 1,
-				pageNumber: 10,
+				pageNumber: 5,
 				// 当前勾选的记录条信息 
                 selectedFormRow: [],
                 // 当前多选的记录条数信息
@@ -283,38 +317,54 @@
 				add: {
 					addDialogFormVisible: false,
 					formLabelWidth: '100px',
+					firmName: '',
 					form: {
-						firmId: '',
-						station: '',
-						workType: '',
-						jobNumber: '',
+						storeName: '',
+						worktype: '',
+						jobnumber: '',
 						name: '',
 						sex: '',
-						password: '',
-						idCard: '',
+						idcard: '',
 						address: '',
-						IMEICode: ''
+						imeiCode: '',
+						mobile: '',
+						password: '',
+						storeId: ''
 					}
 				},
 
 				edit: {
 					editDialogFormVisible: false,
 					formLabelWidth: '100px',
+					firmName: '',
 					form: {
-						firmId: '',
-						station: '',
-						workType: '',
-						jobNumber: '',
+						storeName: '',
+						worktype: '',
+						jobnumber: '',
 						name: '',
 						sex: '',
-						password: '',
-						idCard: '',
+						idcard: '',
 						address: '',
-						IMEICode: ''
+						imeiCode: '',
+						id: '',
+						storeId: '',
+						mobile: '',
+						firmId: ''
+					}
+				},
+
+				deleteMsg: {
+					deleteDialogFormVisible: false,
+					form: {
+						id: '',
 					}
 				}
 			}
 		},
+
+		props:[
+			'AccountType'
+		],
 
 		methods: {
 			handleSizeChange:function( val ) {
@@ -322,60 +372,238 @@
             },
 
             handleCurrentChange:function( val ) {
+            	this.initGrid(val);
             },
 
             handleSelectionChange( val ) {
-               console.log(val)
                if(val.length !== 0){
-                   this.selectedFormRow = val[0];                      
+                   	this.selectedFormRow = val[0];   
+                  	this.edit.form.storeName = this.selectedFormRow.storeName;
+					this.edit.form.worktype = this.selectedFormRow.worktype;
+					this.edit.form.jobnumber = this.selectedFormRow.jobnumber;
+					this.edit.form.name = this.selectedFormRow.name;
+					this.edit.form.sex = this.selectedFormRow.sex;
+					this.edit.form.idcard = this.selectedFormRow.idcard;
+					this.edit.form.address = this.selectedFormRow.address;
+					this.edit.form.imeiCode = this.selectedFormRow.imeiCode;
+					this.edit.firmName = this.selectedFormRow.firmName;
+					this.edit.form.mobile = this.selectedFormRow.mobile;        
                 }
             },
 
             handleSelected: function( selection, row ) {
                 this.selectedRowTotal = selection;
-                console.log(this.selectedFormRow);
+            },
+
+            initLayout: function() {
+            	// 三种账户类型
+            	if(this.AccountType.type === 1) {
+            		this.layout.addBtnShow = false;
+            		this.layout.editBtnShow = false;
+            		this.layout.deleteBtnShow = false;
+            		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
+            	}else if(this.AccountType.type === 2) {
+            		this.layout.addBtnShow = true;
+            		this.layout.editBtnShow = true;
+            		this.layout.deleteBtnShow = true;
+            		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
+            		this.findAllStore(this.AccountType.firmId);
+            	}else if(this.AccountType.type === 3) {
+            		this.layout.addBtnShow = true;
+            		this.layout.editBtnShow = true;
+            		this.layout.deleteBtnShow = true;
+            		this.layout.conpanyShow = true;
+            		this.layout.firmSelectShow = true;
+            	}
+            },
+
+            findAllFirm: function() {
+            	let _this = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify({
+                    	id: 1
+                    }),
+                    contentType: "application/json",
+                    url: path.url + "findAllFirm",
+                    success: function( res ) {	
+                       	_this.AllFirm = res.result.data;
+
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+                });  
+            },
+
+            searchFirmSelectToFirmId: function() {
+            	let _this = this;
+            	_this.searchData.firmId = _this.firmSelect;
+            },
+
+            startSearchEvent: function() {
+            	let _this = this;
+            	_this.searchData.key = _this.keyword;
+            	_this.initGrid(1);
+            },
+
+            addFirmSelectToStore: function() {
+            	let _this = this;
+            	$.each(_this.AllFirm, function(key, val){
+					if(val.name === _this.add.firmName) {
+						_this.add.form.firmId = val.id;
+					}
+				});
+            	_this.findAllStore(_this.add.form.firmId);
+            },
+
+            editFirmSelectToStore: function() {
+            	let _this = this;
+            	$.each(_this.AllFirm, function(key, val){
+					if(val.name === _this.edit.firmName) {
+						_this.edit.form.firmId = val.id;
+					}
+				});
+            	_this.findAllStore(_this.edit.form.firmId);
+            },
+
+            findAllStore: function(val) {
+            	let _this = this;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify({
+                    	id:val
+                    }),
+                    contentType: "application/json",
+                    url: path.url + "findStoreByFirmId",
+                    success: function( res ) {	
+                       	_this.AllStore = res.result.data;
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+                });  
             },
 
             initGrid: function( val ) {
             	let _this = this;
-                // $.ajax({
-                //     type: "POST",
-                //     dataType: "json", 
-                //     async: true,
-                //     xhrFields:{
-                //         withCredentials:true
-                //     },
-                //     crossDomain: true,
-                //     data:JSON.stringify({
-                //     	key: "",
-                //     	pageIndex: val,
-                //     	pageTotal: _this.pageNumber
-                //     }),
-                //     contentType: "application/json",
-                //     url: "http://10.0.0.60:8089/gas/web/operators",
-                //     success: function( res ) {
-                //         console.log(res)
-                //         _this.totalPage = res.result.count;
-                //         _this.tableData = res.result.data;
-                //     },
-                //     error:function() {
-                //     	//console.log(XMLHttpRequest.readyState);
-                //     }
-                // });  
+            	
+                $.ajax({
+                    type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify({
+                    	key: _this.searchData.key,
+                    	firmId: _this.searchData.firmId,
+                    	pageIndex: val,
+                    	pageTotal: _this.pageNumber
+                    }),
+                    contentType: "application/json",
+                    url: path.url + "operators",
+                    success: function( res ) {
+                        _this.totalPage = res.result.count;
+                        _this.tableData = res.result.data;
+                    },
+                   	error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+                });  
             },
 
 			addEvent: function() {
-				alert('add');
 				let _this = this;
+
+				_this.add.firmName = '';
+				_this.add.form.storeName = '';
+				_this.add.form.worktype = '';
+				_this.add.form.jobnumber = '';
+				_this.add.form.name = '';
+				_this.add.form.sex = '';
+				_this.add.form.idcard = '';
+				_this.add.form.address = '';
+				_this.add.form.imeiCode = '';
+				_this.add.form.password = '';
+				_this.add.form.storeId = '';
+				_this.add.form.mobile = '';
+
 				_this.add.addDialogFormVisible = true;
 			},
 			
 			trueToAddEvent: function() {
+				let _this = this;
 
+				$.each(_this.AllStore, function(key, val){
+					if(val.storeName === _this.add.form.storeName) {
+						_this.add.form.storeId = val.id;
+					}
+				});
+
+				$.ajax({
+					type: "PUT",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify(_this.add.form),
+                    contentType: "application/json",
+                    url: path.url + "operator",
+                    success: function( res ) {
+                    	console.log(res)
+                       if(res.code === '0') {
+                            _this.add.addDialogFormVisible = false;
+                               
+                            _this.$notify({
+                                  title: '成功',
+                                  message: '添加成功！',
+                                  type: 'success'
+                            });
+
+                            _this.initGrid(_this.currentPage);
+                        }else{
+                        	 _this.add.addDialogFormVisible = false;
+                               
+                            _this.$notify({
+                                  title: '失败',
+                                  message: '添加失败！',
+                                  type: 'warning'
+                            });
+                        }
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+				});
 			},
 
 			editEvent: function() {
-				alert('edit')
 				let _this = this;
                 if(_this.selectedRowTotal.length === 0) {
                     this.$notify({
@@ -399,20 +627,155 @@
 			},
 
 			trueToEditEvent: function() {
+				let _this = this;
+				
+				$.each(_this.AllFirm, function(key, val){
+					if(val.name === _this.edit.firmName) {
+						_this.edit.form.firmId = val.id;
+					}
+				});
+				$.each(_this.AllStore, function(key, val){
+					if(val.storeName === _this.edit.form.storeName) {
+						_this.edit.form.storeId = val.id;
+					}
+				});
 
+				// 添加操作工id
+				_this.edit.form.id = _this.selectedFormRow.id;
+
+				$.ajax({
+					type: "POST",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify(_this.edit.form),
+                    contentType: "application/json",
+                    url: path.url + "operator",
+                    success: function( res ) {
+                        if(res.code === '0') { 
+                                _this.edit.editDialogFormVisible = false;
+
+                                _this.$notify({
+                                    title: '成功',
+                                    message: '修改成功！',
+                                    type: 'success'
+                                });
+
+                                _this.initGrid(_this.currentPage);
+                        }else{
+                        	 	_this.edit.editDialogFormVisible = false;
+
+                                _this.$notify({
+                                    title: '失败',
+                                    message: '修改失败！',
+                                    type: 'warning'
+                                });
+                        }
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+				});
 			},
 
 			deleteEvent: function() {
-				alert('delete')
-			}
+				let _this = this;
+				if(_this.selectedRowTotal.length === 0) {
+                   	this.$notify({
+                        title: '警告',
+                        message: '请勾选您需要删除的记录！',
+                        type: 'warning'
+                    });
+                    return false;
+                }else {
+                    _this.deleteMsg.deleteDialogFormVisible = true;//弹出编辑框
+                }
+			},
+
+			trueToDeleteEvent: function() {
+                let _this = this;  
+
+                _this.deleteMsg.form.id = _this.selectedFormRow.id;
+
+                $.ajax({
+					type: "DELETE",
+                    dataType: "json", 
+                    async: true,
+                    xhrFields:{
+                        withCredentials:true
+                    },
+                    crossDomain: true,
+                    data:JSON.stringify(_this.deleteMsg.form),
+                    contentType: "application/json",
+                    url: path.url + "operator",
+                    success: function( res ) {
+                       if(res.code === '0') {
+                            _this.deleteMsg.deleteDialogFormVisible = false;
+                                
+                            _this.$notify({
+                                title: '成功',
+                                message: '删除成功！',
+                                type: 'success'
+                           	});
+
+                           _this.initGrid(_this.currentPage);
+                        }else{
+                        	_this.deleteMsg.deleteDialogFormVisible = false;
+                                
+                            _this.$notify({
+                                title: '失败',
+                                message: res.description,
+                                type: 'warning'
+                           	});
+                        }
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
+                    }
+				}); 
+           	},
+
+           	handleClose( done ) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {});
+            },
 		},
 
 		mounted: function() {
 			this.initGrid(1);
-		}
+			this.initLayout();
+			this.findAllFirm();
+		},
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.el-row {
 	    margin-bottom: 20px;
 	    &:last-child {
@@ -438,9 +801,9 @@
 		height: 10%;
 		background-color: white;
 	}
-	/*.el-select,.el-input {
-    	width: 135px!important;
-  	}*/
+	.el-select,.el-input {
+    	width: 185px!important;
+  	}
   	.topToolNav .toLayoutBtn{
 		position: absolute;
 		top: 50%;
@@ -463,6 +826,10 @@
     	right: 0;
     	margin-top: -18px;
     	margin-right: 30px;
+	}
+	.hintMsg{
+		margin-top: 10px;
+		color: red;
 	}
 	.pagination{
 		position: absolute;

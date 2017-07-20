@@ -1,6 +1,7 @@
 * {
 	padding: 0;
 	margin: 0;
+	list-style-type:none;
 }
 
 html,body{
@@ -11,5 +12,6 @@ html,body{
 a{color: #2fa0ec;text-decoration: none;outline: none;}
 a:hover,a:focus{color:#74777b;}
 
+li{list-style-type:none;}
 
 

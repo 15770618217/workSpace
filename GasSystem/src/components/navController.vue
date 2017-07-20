@@ -28,7 +28,10 @@
 		          <el-menu-item index="1-1">
 		          	<router-link to="/AccountManagement">账户管理</router-link>
 		          </el-menu-item>
-		          <el-menu-item index="1-2">
+		           <el-menu-item index="1-2">
+		          	<router-link to="/setUpManagement">设置</router-link>
+		          </el-menu-item>
+		          <el-menu-item index="1-3">
 		          	<router-link to="/LogManagement">日志管理</router-link>
 		          </el-menu-item>
 		      </el-submenu>
@@ -58,6 +61,24 @@
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
+	
 	.controller{
 		width: 100%;
 		height: 100%;

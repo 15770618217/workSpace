@@ -1,17 +1,20 @@
 <template>
 	<div class="storePage">
 		<div class="topToolNav">
-				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent" v-if="layout.addBtnShow">增加</el-button>
-               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent" v-if="layout.editBtnShow">编辑</el-button>
-                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent" v-if="layout.deleteBtnShow">删除</el-button>
+				<el-button class="toLayoutBtn LayoutBtnAdd" type="primary" :class="{btn:true}" @click="addEvent" v-show="layout.addBtnShow">增加</el-button>
+               	<el-button class="toLayoutBtn LayoutBtnEdit" type="primary" :class="{btn:true}" @click="editEvent" v-show="layout.editBtnShow">编辑</el-button>
+                <el-button class="toLayoutBtn LayoutBtnDelete" type="primary" :class="{btn:true}" @click="deleteEvent" v-show="layout.deleteBtnShow">删除</el-button>
 				<el-input placeholder="请输入查询关键字" v-model="keyword" class="searchInput">
-			    <el-select v-model="select" slot="prepend" placeholder="关键字选择">
-			      <el-option label="所属气站" value="1"></el-option>
-			      <el-option label="工号" value="2"></el-option>
-			      <el-option label="名字" value="3"></el-option>
-			      <el-option label="身份证号" value="4"></el-option>
-			    </el-select>
-			    <el-button slot="append" icon="search"></el-button>
+			    <!-- 选择公司名 -->
+	            <el-select v-model="firmSelect" slot="prepend" placeholder="请输入查询的公司" v-show="layout.firmSelectShow" @change="searchFirmSelectToFirmId">
+	                <el-option
+	                    v-for="item in AllFirm" 
+	                    :key="item.name"
+	                    :label="item.name" 
+	                    :value="item.id">
+	                </el-option>
+	            </el-select>
+			    <el-button slot="append" icon="search" @click="startSearchEvent"></el-button>
 			</el-input>
 		</div>
 
@@ -48,6 +51,7 @@
 	                label="联系电话">
 	            </el-table-column> 
 	        </el-table>
+	        <h4 class="hintMsg">门店记录查询中可查询的关键字:门店名称、门店地址、门店负责人、手机、创建人、修改人、公司名)。</h4>
 	        <el-pagination
 	            @size-change="handleSizeChange"
 	            @current-change="handleCurrentChange"
@@ -110,17 +114,17 @@
 	    </el-dialog>
 
 	    <!-- 编辑按钮弹出框 -->
-	    <el-dialog title="增加操作工信息" :visible.sync="edit.editDialogFormVisible">
-	      <el-form :model="selectedFormRow" :label-width="edit.formLabelWidth">
+	    <el-dialog title="门店编辑" :visible.sync="edit.editDialogFormVisible">
+	      <el-form :model="edit.form" :label-width="edit.formLabelWidth">
 		      	<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="联系电话">
-			          <el-input v-model="selectedFormRow.phone" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.phone" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="门店地址">
-			          <el-input v-model="selectedFormRow.address" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.address" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -128,12 +132,12 @@
 	       		<el-row>
 				  <el-col :span="12">
 				  	<el-form-item label="门店责任人">
-			          <el-input v-model="selectedFormRow.personLiable" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.personLiable" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				  <el-col :span="12">
 				  	<el-form-item label="门店名称">
-			          <el-input v-model="selectedFormRow.storeName" auto-complete="off"></el-input>
+			          <el-input v-model="edit.form.storeName" auto-complete="off"></el-input>
 			        </el-form-item>
 				  </el-col>
 				</el-row>
@@ -181,16 +185,25 @@
 					addBtnShow: true,
 					editBtnShow: true,
 					deleteBtnShow: true,
-					conpanyShow: false
+					conpanyShow: false,
+					firmSelectShow: null,
 				},
 
-				AllFirm: [],
+				firmWord: '',
+				firmSelect: '',
 				keyword: '',
-				select: '',
+
+				searchData: {
+					firmId: '',
+					key: ''
+				},
+
 				tableData: [],
-				totalPage: 50,
+				totalPage: 5,
 				currentPage: 1,
 				pageNumber: 5,
+				// 全部公司名称
+				AllFirm: [],
 				// 当前勾选的记录条信息 
                 selectedFormRow: [],
                 // 当前多选的记录条数信息
@@ -246,44 +259,40 @@
             },
 
             handleSelectionChange( val ) {
-               // console.log(val)
                if(val.length !== 0){
-                   this.selectedFormRow = val[0];                      
+                    this.selectedFormRow = val[0];     
+                    this.edit.form.id = this.selectedFormRow.id;
+					this.edit.form.phone = this.selectedFormRow.phone;
+					this.edit.form.personLiable = this.selectedFormRow.personLiable;
+					this.edit.form.address = this.selectedFormRow.address;
+					this.edit.form.storeName = this.selectedFormRow.storeName;          
                 }
             },
 
             handleSelected: function( selection, row ) {
                 this.selectedRowTotal = selection;
-                console.log(this.selectedFormRow);
             },
 
             initLayout: function() {
-            	// console.log(this.AccountType.type)
             	// 三种账户类型
             	if(this.AccountType.type === 1) {
-            		alert('普通用户');
             		this.layout.addBtnShow = false;
             		this.layout.editBtnShow = false;
             		this.layout.deleteBtnShow = false;
             		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
             	}else if(this.AccountType.type === 2) {
-            		alert('管理员');
-            		this.layout.topToolNav = true;
+            		this.layout.addBtnShow = true;
             		this.layout.editBtnShow = true;
             		this.layout.deleteBtnShow = true;
             		this.layout.conpanyShow = false;
+            		this.layout.firmSelectShow = false;
             	}else if(this.AccountType.type === 3) {
-            		alert('超级管理员');
-            		this.layout.topToolNav = true;
+            		this.layout.addBtnShow = true;
             		this.layout.editBtnShow = true;
             		this.layout.deleteBtnShow = true;
             		this.layout.conpanyShow = true;
-            	}else {
-            		this.layout.topToolNav = true;
-            		this.layout.editBtnShow = true;
-            		this.layout.deleteBtnShow = true;
-            		this.layout.conpanyShow = false;
-            		return false;
+            		this.layout.firmSelectShow = true;
             	}
             },
 
@@ -301,16 +310,28 @@
                     	id:1
                     }),
                     contentType: "application/json",
-                    url: "http://10.0.0.46:8089/gas/web/findAllFirm",
+                    url: path.url + "findAllFirm",
                     success: function( res ) {	
                        	_this.AllFirm = res.result.data;
-                       	// console.log(_this.AllFirm)
 
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
                 });  
+            },
+
+            searchFirmSelectToFirmId: function() {
+            	let _this = this;
+            	_this.searchData.firmId = _this.firmSelect;
+            },
+
+            startSearchEvent: function() {
+            	let _this = this;
+            	_this.searchData.key = _this.keyword;
+            	_this.initGrid(1);
             },
 
             initGrid: function( val ) {
@@ -324,25 +345,26 @@
                     },
                     crossDomain: true,
                     data:JSON.stringify({
-                    	key: "",
+                    	key: _this.searchData.key,
+                    	firmId: _this.searchData.firmId,
                     	pageIndex: val,
                     	pageTotal: _this.pageNumber
                     }),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/stores",
+                    url: path.url + "stores",
                     success: function( res ) {
-                        // console.log(res)
                         _this.totalPage = res.result.count;
                         _this.tableData = res.result.data;
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
                 });  
             },
 
 			addEvent: function() {
-				alert('add');
 				let _this = this;
 
 				_this.add.form.storeName = '';
@@ -362,7 +384,7 @@
 						_this.add.form.firmId = val.id;
 					}
 				});
-				// console.log(_this.add.form)
+
 				$.ajax({
 					type: "PUT",
                     dataType: "json", 
@@ -373,7 +395,7 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.add.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/store",
+                    url: path.url + "store",
                     success: function( res ) {
                        if(res.code === '0') {
                             _this.add.addDialogFormVisible = false;
@@ -395,14 +417,15 @@
                             });
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				});
 			},
 
 			editEvent: function() {
-				alert('edit')
 				let _this = this;
                 if(_this.selectedRowTotal.length === 0) {
                     this.$notify({
@@ -427,12 +450,6 @@
 
 			trueToEditEvent: function() {
 				let _this = this;
-				
-				_this.edit.form.id = _this.selectedFormRow.id;
-				_this.edit.form.phone = _this.selectedFormRow.phone;
-				_this.edit.form.personLiable = _this.selectedFormRow.personLiable;
-				_this.edit.form.address = _this.selectedFormRow.address;
-				_this.edit.form.storeName = _this.selectedFormRow.storeName;
 
 				$.each(_this.AllFirm, function(key, val){
 					if(val.name === _this.selectedFormRow.company) {
@@ -440,7 +457,6 @@
 					}
 				});
 
-				console.log(_this.edit.form)
 				$.ajax({
 					type: "POST",
                     dataType: "json", 
@@ -451,7 +467,7 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.edit.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/store",
+                    url: path.url + "store",
                     success: function( res ) {
                         if(res.code === '0') { 
                                 _this.edit.editDialogFormVisible = false;
@@ -473,15 +489,16 @@
                                 });
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				});
 			},
 
 			deleteEvent: function() {
 				let _this = this;
-				alert('delete')
 				if(_this.selectedRowTotal.length === 0) {
                    	this.$notify({
                         title: '警告',
@@ -499,7 +516,6 @@
 
                 _this.deleteMsg.form.id = _this.selectedFormRow.id;
 
-                // console.log(_this.deleteMsg.form.id)
                 $.ajax({
 					type: "DELETE",
                     dataType: "json", 
@@ -510,9 +526,8 @@
                     crossDomain: true,
                     data:JSON.stringify(_this.deleteMsg.form),
                     contentType: "application/json",
-                    url: "http://10.0.0.244:8089/gas/web/store",
+                    url: path.url + "store",
                     success: function( res ) {
-                    	// console.log(res)
                        if(res.code === '0') {
                             _this.deleteMsg.deleteDialogFormVisible = false;
                                 
@@ -533,8 +548,10 @@
                            	});
                         }
                     },
-                    error:function() {
-                    	//console.log(XMLHttpRequest.readyState);
+                    error:function(XMLHttpRequest, textStatus, errorThrow) {
+                    	if(XMLHttpRequest.status == 800) {
+                    		_this.$emit( 'reLogin', ['relogin'] )
+                    	}
                     }
 				}); 
            	},
@@ -556,6 +573,23 @@
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.el-row {
 	    margin-bottom: 20px;
 	    &:last-child {
@@ -581,9 +615,9 @@
 		height: 10%;
 		background-color: white;
 	}
-	/*.el-select,.el-input {
-    	width: 135px!important;
-  	}*/
+	.el-select,.el-input {
+    	width: 185px!important;
+  	}
   	.topToolNav .toLayoutBtn{
 		position: absolute;
 		top: 50%;
@@ -606,6 +640,10 @@
     	right: 0;
     	margin-top: -18px;
     	margin-right: 30px;
+	}
+	.hintMsg{
+		margin-top: 10px;
+		color: red;
 	}
 	.pagination{
 		position: absolute;

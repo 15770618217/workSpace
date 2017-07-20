@@ -8,8 +8,10 @@ import gasInformation from '../view/gasInformation.vue'
 import workerInformation from '../view/workerInformation.vue'
 import storeManagement from '../view/storeManagement.vue'
 import AccountManagement from '../view/AccountManagement.vue'
+import setUpManagement from '../view/setUpManagement.vue'
 import LogManagement from '../view/LogManagement.vue'
 import gasFile from '../view/gasFile.vue'
+import safetyInstructions from '../view/safetyInstructions.vue'
 
 Vue.use(VueRouter);
 
@@ -56,6 +58,11 @@ export default new VueRouter({
 			component:AccountManagement
 		},
 		{
+			path:'/setUpManagement',
+			name:'setUpManagement',
+			component:setUpManagement
+		},
+		{
 			path:'/LogManagement',
 			name:'LogManagement',
 			component:LogManagement
@@ -64,6 +71,11 @@ export default new VueRouter({
 			path: '/gasFile',
 			name: 'gasFile',
 			component: gasFile
+		},
+		{
+			path: '/safetyInstructions',
+			name: 'safetyInstructions',
+			component: safetyInstructions
 		}
 	]
 });

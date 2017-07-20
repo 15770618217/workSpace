@@ -36,7 +36,15 @@
 		<section class="saveMsg">
 			<el-row>
 			  <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
-			  <el-col :span="22"><div class="grid-content bg-purple"><div class="titleMsg"><h3>{{title}}</h3></div></div></el-col> 
+
+			  <router-link to="/safetyInstructions">	
+				  <el-col :span="22">
+				  	<div class="grid-content bg-purple">
+				  		<div class="titleMsg"><h3>{{title}}</h3></div>
+				  	</div>
+				  </el-col>
+			  </router-link>
+			  
 			  <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
 			</el-row>
 
@@ -69,6 +77,23 @@
 	}
 </script>
 <style scoped>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style-type:none;
+	}
+
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	button{
+		padding: 10px!important;
+	}
+	a{color: #2fa0ec;text-decoration: none;outline: none;}
+	a:hover,a:focus{color:#74777b;}
+
+	li{list-style-type:none;}
 	.gasFile{
 		width: 50%;
 		height: 100%;

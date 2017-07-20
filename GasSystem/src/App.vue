@@ -6,7 +6,7 @@
     <div class="webContent" v-if="webShow">
       <!-- 系统头部 -->
       <div class="topHeader">
-        <GasHeader v-on:loginOut="loginOutState" :headerUserName="headerUserName"></GasHeader><!-- :headerUserName="headerUserName" -->
+        <GasHeader v-on:loginOut="loginOutState" :headerUserName="headerUserName" :AccountType="AccountType"></GasHeader><!-- :headerUserName="headerUserName" -->
       </div>
       <!-- 系统主内容 -->
       <div class="middleContent">
@@ -16,7 +16,7 @@
         </div>
         <!-- 系统中间表格 -->
         <div class="GasRenderContent">
-           <router-view :AccountType="AccountType"></router-view>
+           <router-view :AccountType="AccountType" v-on:reLogin="reLoginEvent"></router-view>
         </div>
       </div>
 
@@ -54,6 +54,13 @@ export default {
         this.webShow = false;
         this.loginShow = true;
       }
+    },
+
+    reLoginEvent: function(data) {//重新登录
+      if(data[0] === 'relogin'){
+        this.webShow = false;
+        this.loginShow = true;
+      }
     }
   },
 
@@ -66,6 +73,23 @@ export default {
 </script>
 
 <style scoped>
+  * {
+    padding: 0;
+    margin: 0;
+    list-style-type:none;
+  }
+
+  html,body{
+    width: 100%;
+    height: 100%;
+  }
+  button{
+    padding: 10px!important;
+  }
+  a{color: #2fa0ec;text-decoration: none;outline: none;}
+  a:hover,a:focus{color:#74777b;}
+
+  li{list-style-type:none;}
   #app{
     width: 100%;
     height: 100%;
